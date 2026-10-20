@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+__pycache__/
+.venv/
+*.pyc
+*.sqlite*
+*.db
+data/
+backups/
+exports/
+.DS_Store
+logics/.cache/*
+!logics/.cache/.gitkeep

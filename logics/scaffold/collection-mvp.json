@@ -1,0 +1,241 @@
+{
+  "title": "SommeilEnOr collection-only PWA MVP",
+  "references": [
+    "README.md",
+    "docs/mvp-questions.md"
+  ],
+  "request": {
+    "complexity": "High",
+    "theme": "Personal sleep context collection",
+    "needs": [
+      "Record daily habits quickly on phone and desktop with repeated timed events.",
+      "Associate a tracking day and its after-midnight events with the appropriate following main night.",
+      "Export collected data for later comparison with Garmin outside the MVP."
+    ],
+    "context": [
+      "Green tea, black tea, mate, activity details/durations/times, meals, alcohol, gluten, naps, late sugar, evening hot drinks, cat presence, before/after-night stress and early waking are explicitly requested.",
+      "Repository setup and development-ready planning are authorized; application implementation and production deployment are not part of this task.",
+      "Product questions in docs/mvp-questions.md remain open. Proposed defaults are not user-approved decisions; resolve the relevant questions before implementing dependent behavior.",
+      "Proposed stack: React/TypeScript, FastAPI and SQLite with Docker; existing hosting uses a shared HTTPS reverse proxy.",
+      "Public source repository; personal data and Garmin exports must remain private."
+    ],
+    "acceptance_criteria": [
+      "AC1: Deliver an authenticated French mobile-first installable PWA with server-persisted records shared across phone and desktop sessions; expose connectivity and save failures without claiming unsaved changes were saved.",
+      "AC2: Preserve actual timestamps and timezone alongside a tracking-day date and stable editable main-night association; demonstrate after-midnight, boundary, DST and manual reassignment examples using the confirmed assignment rule.",
+      "AC3: Support repeated beverage intakes with time and distinct green tea, black tea and mate categories; support the confirmed meaning of combinations and represent evening hot drinks without double counting.",
+      "AC4: Support repeated physical activity sessions with activity details, start time and duration, and repeated naps with time and duration; validate interval and duration consistency.",
+      "AC5: Capture meal timing, alcohol, gluten and late sugar using explicit present/absent/unknown states and the confirmed event-versus-daily granularity; preserve the meaning of late sugar in exports.",
+      "AC6: Capture cat presence for a night, stress for the confirmed before/after periods, and early-waking context with confirmed planned/actual semantics; identify the assessed date/period unambiguously.",
+      "AC7: Provide a day/night history with create, edit and delete operations; preserve repeated entries and distinguish missing data, explicit absence and completed daily assessments.",
+      "AC8: Export all user-collected data in versioned JSON and a documented normalized CSV bundle, including IDs, timezone/offset, original timestamps, units, missingness, tracking days and night links; verify completeness using synthetic round-trip fixtures.",
+      "AC9: Keep Garmin imports/synchronization, credentials, correlation calculations and health recommendations out of the MVP; document the export join convention for future Garmin records without inventing Garmin values.",
+      "AC10: Provide reproducible local startup, a container deployment artifact, persistent storage and documented backup/restore; verify authentication and isolation of private data, and commit synthetic data only; do not deploy production as part of planning."
+    ]
+  },
+  "product": {
+    "title": "SommeilEnOr personal sleep context journal",
+    "overview": "A fast French PWA to collect daily and nightly context and export it for later sleep analysis.",
+    "goals": [
+      "Low-friction repeated event capture and daily recap.",
+      "Reliable temporal links across midnight and devices.",
+      "Complete portable records with explicit missingness."
+    ],
+    "non_goals": [
+      "Garmin import or synchronization.",
+      "Correlation dashboards, causal claims or health recommendations.",
+      "Production deployment during initial corpus creation."
+    ]
+  },
+  "backlog_items": [
+    {
+      "title": "Define tracking days nights and collection data contracts",
+      "priority": "High",
+      "complexity": "Medium",
+      "theme": "Collection MVP",
+      "request_acs": [
+        "AC2",
+        "AC5",
+        "AC6",
+        "AC7",
+        "AC8",
+        "AC9"
+      ],
+      "problem": [
+        "Midnight and ambiguous missing values can make future sleep comparisons incorrect."
+      ],
+      "scope_in": [
+        "Resolve questions 4, 5, 9, 10, 14 and 15 in docs/mvp-questions.md before finalizing affected contracts.",
+        "Define event, component, tracking day, main night, assessment, stable ID, unit, schema version and tri-state answer contracts.",
+        "Store actual timestamps independently from editable night association; distinguish naps from the main night.",
+        "Priority rationale: temporal identity and missingness are dependencies of every capture screen."
+      ],
+      "scope_out": [
+        "Garmin integration, correlations and production deployment."
+      ],
+      "acceptance_criteria": [
+        "AC1: Document the agreed assignment rule with 00:30 and 08:00 examples, boundary values, DST and late bedtime/manual override cases.",
+        "AC2: Define unique daily stress assessment ownership and unambiguous before/after-night references.",
+        "AC3: Define unknown/none/not-applicable/completed semantics and a migration-safe export schema."
+      ]
+    },
+    {
+      "title": "Build authenticated cross-device PWA foundation",
+      "priority": "High",
+      "complexity": "Medium",
+      "theme": "Collection MVP",
+      "request_acs": [
+        "AC1",
+        "AC7",
+        "AC10"
+      ],
+      "problem": [
+        "A public repository must deliver a private journal usable across devices."
+      ],
+      "scope_in": [
+        "Confirm access model, offline scope and stack (questions 1, 2, 22).",
+        "French responsive app shell, install manifest and production service worker/update behavior.",
+        "Authenticated API, server persistence, closed registration default proposal, sessions and appropriate mutation protection.",
+        "Visible save/connectivity states; offline writes only if explicitly selected and designed.",
+        "Priority rationale: access control and reliable persistence precede personal-data collection."
+      ],
+      "scope_out": [
+        "Garmin integration, correlations and production deployment."
+      ],
+      "acceptance_criteria": [
+        "AC1: Verify unauthenticated users cannot read, mutate or export journal data.",
+        "AC2: Demonstrate a saved record is visible on a second authenticated browser and layouts work on mobile and desktop.",
+        "AC3: Verify installability over HTTPS, update behavior and truthful handling of failed/offline saves."
+      ]
+    },
+    {
+      "title": "Collect repeated beverages physical activities and naps",
+      "priority": "High",
+      "complexity": "Medium",
+      "theme": "Collection MVP",
+      "request_acs": [
+        "AC3",
+        "AC4",
+        "AC7"
+      ],
+      "problem": [
+        "Repeated daily events cannot be represented by one boolean per category."
+      ],
+      "scope_in": [
+        "Resolve beverage combinations, quantity units and exercise options (questions 6–8, 11–12).",
+        "Quick creation and recap editing of distinct beverage intakes, activity sessions and naps.",
+        "Retain multiple entries on the same day, event times/durations and editable night links.",
+        "Priority rationale: timed repeated events are the core collection workflow."
+      ],
+      "scope_out": [
+        "Garmin integration, correlations and production deployment."
+      ],
+      "acceptance_criteria": [
+        "AC1: Save two green teas, one black tea and one mate at distinct times without overwriting any intake; exercise the agreed combination representation.",
+        "AC2: Create multiple physical activities and naps; reject invalid intervals/durations and allow corrections.",
+        "AC3: Represent evening hot drinks consistently with existing beverage records, with no duplicate event."
+      ]
+    },
+    {
+      "title": "Collect meal night context and daily assessments",
+      "priority": "High",
+      "complexity": "Medium",
+      "theme": "Collection MVP",
+      "request_acs": [
+        "AC5",
+        "AC6",
+        "AC7"
+      ],
+      "problem": [
+        "Meal and night context needs clear granularity and meaningful unanswered states."
+      ],
+      "scope_in": [
+        "Resolve meal granularity, sugar threshold, cat context, stress periods and early-wake fields (questions 9–16).",
+        "Capture meal times, alcohol/gluten, late sugar, night cat presence and stress assessments.",
+        "Separate planned early wake constraints from observed awakenings if both are selected.",
+        "Optional subjective sleep fields only after confirmation.",
+        "Priority rationale: complete the requested factor set after shared capture patterns exist."
+      ],
+      "scope_out": [
+        "Garmin integration, correlations and production deployment."
+      ],
+      "acceptance_criteria": [
+        "AC1: Save and edit all requested factors while distinguishing unanswered values from explicit negative answers.",
+        "AC2: Display the exact assessed day or period for each stress answer on both sides of a night, with no contradictory duplicates.",
+        "AC3: Verify early-wake and late-sugar exports preserve the confirmed meaning, including time and reason where selected."
+      ]
+    },
+    {
+      "title": "Deliver day night history and portable exports",
+      "priority": "High",
+      "complexity": "Medium",
+      "theme": "Collection MVP",
+      "request_acs": [
+        "AC2",
+        "AC7",
+        "AC8",
+        "AC9"
+      ],
+      "problem": [
+        "The collection MVP must already produce reliable inputs for later external comparisons."
+      ],
+      "scope_in": [
+        "Day/night navigation, historical editing, deletion and completion state.",
+        "Versioned complete JSON plus normalized CSV bundle and data dictionary.",
+        "All repeated events, components, daily assessments and associations included.",
+        "Document future Garmin alignment by wake date and actual timezone; no integration implemented.",
+        "Priority rationale: useful history and lossless export complete the collection promise."
+      ],
+      "scope_out": [
+        "Garmin integration, correlations and production deployment."
+      ],
+      "acceptance_criteria": [
+        "AC1: Export a synthetic journal spanning midnight and DST, repeated events and missing/negative answers; compare every exported entity and relationship to persisted data.",
+        "AC2: Demonstrate historical time edits and night overrides remain consistent in history and export.",
+        "AC3: Ensure exports are authenticated, omit secrets, and contain no fabricated Garmin or correlation fields."
+      ]
+    },
+    {
+      "title": "Package and verify collection MVP for self hosting",
+      "priority": "Medium",
+      "complexity": "Medium",
+      "theme": "Collection MVP",
+      "request_acs": [
+        "AC1",
+        "AC10"
+      ],
+      "problem": [
+        "A cross-device journal needs reproducible operations and recoverable persistent storage."
+      ],
+      "scope_in": [
+        "Document local startup and selected dependency versions, container build and generic HTTPS reverse-proxy integration.",
+        "Use environment templates without real deployment addresses or credentials.",
+        "Document and exercise backup/restore with synthetic data and persistent volumes.",
+        "Focused integration and responsive-browser checks; French i18n contract validation.",
+        "Priority rationale: operational verification is required before any later deployment."
+      ],
+      "scope_out": [
+        "Garmin integration, correlations and production deployment."
+      ],
+      "acceptance_criteria": [
+        "AC1: Start a clean instance from documented commands and verify a restart preserves synthetic journal entries.",
+        "AC2: Restore a synthetic backup into an isolated instance and compare records and exported links.",
+        "AC3: Run the relevant automated checks and mobile/desktop smoke checks; record evidence without claiming production deployment."
+      ]
+    }
+  ],
+  "orchestration_task": {
+    "title": "Orchestrate SommeilEnOr collection MVP delivery",
+    "plan": [
+      "Resolve the product decisions required by each slice with the user; update acceptance criteria through the Logics workflow before dependent implementation.",
+      "Deliver High-priority temporal/data contracts first, then authenticated PWA foundation.",
+      "Deliver High-priority repeated events, meal/night assessments, then history and full export.",
+      "Deliver Medium-priority packaging and restore verification after the functional slices.",
+      "Record evidence against each request AC, run appropriate checks and Logics validation, and close out only after actual implementation; deployment needs a separate instruction."
+    ]
+  },
+  "context_pack": {
+    "out": "logics/context-packs/collection-mvp.json",
+    "mode": "summary-only",
+    "profile": "normal"
+  }
+}
