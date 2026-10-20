@@ -1,1 +1,196 @@
-{}
+{
+  "activity": {
+    "cycling": "Vélo",
+    "other": "Autre",
+    "running": "Course",
+    "strength": "Renforcement",
+    "walking": "Marche"
+  },
+  "answer": {
+    "no": "Non",
+    "unknown": "Non renseigné",
+    "yes": "Oui"
+  },
+  "auth": {
+    "email": "Adresse e-mail",
+    "login": "Se connecter",
+    "logout": "Déconnexion",
+    "password": "Mot de passe",
+    "password_hint": "Au moins 10 caractères. Vos données restent privées à votre compte.",
+    "register": "Créer un compte",
+    "tagline": "Journal personnel du contexte de vos nuits.",
+    "to_login": "J'ai déjà un compte",
+    "to_register": "Créer un compte"
+  },
+  "banner": {
+    "offline": "Hors ligne : aucune saisie ne peut être enregistrée tant que la connexion n'est pas rétablie.",
+    "update": "Une nouvelle version est disponible.",
+    "update_apply": "Mettre à jour"
+  },
+  "capture": {
+    "activity": "Activité physique",
+    "activity_add": "Ajouter une séance",
+    "activity_hint": "Une seule activité par séance, avec son intensité, l'heure de début et la durée.",
+    "activity_save": "Enregistrer la séance",
+    "activity_type": "Type d'activité",
+    "drink": {
+      "add": "Ajouter une boisson",
+      "hint": "Chaque appui crée une prise distincte à l'heure choisie."
+    },
+    "drinks": "Boissons",
+    "duration": "Durée",
+    "duration_invalid": "La durée doit être un nombre entier de minutes supérieur à zéro.",
+    "intensity": "Intensité",
+    "nap": "Sieste",
+    "nap_add": "Ajouter une sieste",
+    "nap_hint": "Heure de début (heure choisie ci-dessus) et durée.",
+    "nap_save": "Enregistrer la sieste",
+    "tracking_day": "Journée de suivi : {date} (la journée commence à 04:00, heure de Paris).",
+    "volume": "Volume",
+    "volume_invalid": "Le volume doit être supérieur à zéro."
+  },
+  "common": {
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "loading": "Chargement…",
+    "retry": "Réessayer",
+    "save": "Enregistrer"
+  },
+  "day": {
+    "alcohol": "Alcool aujourd'hui",
+    "dinner": "Dîner",
+    "dinner_quantity": "Quantité du dîner",
+    "dinner_time": "Heure du dîner",
+    "evening_drink": "Boisson chaude sans caféine le soir",
+    "events": "Saisies du {date}",
+    "events_empty": "Aucune saisie pour cette journée.",
+    "experienced_stress": "Stress vécu dans la journée",
+    "gluten": "Gluten aujourd'hui",
+    "late_sugar": "Sucre tardif",
+    "late_sugar_hint": "Vous décidez vous-même si la prise était tardive ; aucun seuil n'est calculé.",
+    "late_sugar_time": "Heure de la prise",
+    "late_sugar_time_needed": "Indiquez l'heure pour enregistrer « Oui ».",
+    "title": "Journée du {date}"
+  },
+  "dinner": {
+    "big": "Copieux",
+    "massive": "Très copieux",
+    "medium": "Moyen",
+    "small": "Léger"
+  },
+  "drink": {
+    "black_tea": "Thé noir",
+    "green_tea": "Thé vert",
+    "infusion": "Infusion",
+    "mate": "Maté"
+  },
+  "error": {
+    "generic": "Une erreur est survenue.",
+    "session": "Session expirée : reconnectez-vous."
+  },
+  "event": {
+    "delete": {
+      "confirm": "Supprimer définitivement cette saisie ?"
+    },
+    "night": "Nuit associée",
+    "night_custom": "Autre nuit commençant le",
+    "night_default": "Par défaut (règle des 04:00)",
+    "night_label": "Nuit du {date}",
+    "night_manual": "associée manuellement",
+    "night_previous": "Nuit précédente (du {date})",
+    "time": "Heure réelle"
+  },
+  "export": {
+    "csv": "Télécharger le lot CSV (.zip)",
+    "description": "Exportez tout votre historique : journées, nuits, prises, activités, siestes, favoris et suggestions (dans des fichiers séparés).",
+    "hint": "Les heures réelles, les décalages UTC, les unités et les réponses non renseignées sont conservés. Un dictionnaire de données est inclus.",
+    "json": "Télécharger le JSON",
+    "title": "Exporter mes données"
+  },
+  "favorite": {
+    "delete": "Supprimer le favori {label}",
+    "delete_confirm": "Supprimer le favori « {label} » ? Les saisies déjà créées sont conservées.",
+    "drink": "Boisson",
+    "empty": "Aucun favori pour l'instant.",
+    "hint": "Un favori crée une nouvelle prise indépendante, à l'heure choisie.",
+    "label": "Nom du favori",
+    "new": "Nouveau favori",
+    "title": "Favoris"
+  },
+  "history": {
+    "date": "Journée de suivi",
+    "hint": "Corrigez librement le {date} : saisies, contexte de la journée et de la nuit suivante.",
+    "next": "Journée suivante",
+    "previous": "Journée précédente",
+    "recorded": "Journées avec des données"
+  },
+  "intensity": {
+    "high": "Forte",
+    "low": "Faible",
+    "medium": "Modérée"
+  },
+  "kind": {
+    "activity": "Activité",
+    "drink": "Boisson",
+    "nap": "Sieste"
+  },
+  "nav": {
+    "export": "Export",
+    "history": "Historique",
+    "label": "Navigation principale",
+    "suggestions": "Suggestions",
+    "today": "Aujourd'hui"
+  },
+  "night": {
+    "anticipated_stress": "Stress anticipé pour le {date}",
+    "anticipated_stress_hint": "Distinct du stress réellement vécu ce jour-là, qui ne le remplace jamais.",
+    "cat": "Chat présent dans la chambre",
+    "early_wake": "Réveil matinal prévu",
+    "early_wake_hint": "Contrainte planifiée, pas une mesure du réveil réel.",
+    "early_wake_reason": "Motif",
+    "early_wake_target": "Heure prévue",
+    "habitual": "Nuit habituelle indicative : 23:30–07:00. Elle ne mesure rien et ne change aucune association.",
+    "reassigned_in": "Saisies d'autres journées associées à cette nuit",
+    "title": "Nuit du {start} au {end}"
+  },
+  "save": {
+    "disconnected": "Hors ligne : non enregistré.",
+    "failed": "Échec :",
+    "pending": "Enregistrement…",
+    "saved": "Enregistré"
+  },
+  "stress": {
+    "absent": "Absent",
+    "high": "Élevé",
+    "medium": "Moyen"
+  },
+  "suggest": {
+    "button": "Suggérer une amélioration",
+    "hint": "Note privée sur l'application, visible uniquement par vous. Elle n'est ni publiée ni ajoutée au journal.",
+    "placeholder": "Option ou réglage qui manque ici…",
+    "saved": "Suggestion enregistrée",
+    "send": "Enregistrer la suggestion",
+    "title": "Suggestion de fonctionnalité"
+  },
+  "suggestions": {
+    "delete": {
+      "confirm": "Supprimer cette suggestion ?"
+    },
+    "empty": "Aucune suggestion enregistrée.",
+    "hint": "Vos idées d'amélioration, privées et jamais publiées automatiquement.",
+    "title": "Mes suggestions"
+  },
+  "time": {
+    "ambiguous": "Cette heure existe deux fois (passage à l'heure d'hiver) : choisissez le décalage.",
+    "label": "Heure de la saisie",
+    "nonexistent": "Cette heure n'existe pas (passage à l'heure d'été).",
+    "now": "Maintenant",
+    "offset": "Décalage horaire",
+    "offset_choose": "Choisir…",
+    "offset_summer": "(heure d'été)",
+    "offset_winter": "(heure d'hiver)",
+    "other": "Autre heure",
+    "required": "Indiquez une date et une heure."
+  }
+}

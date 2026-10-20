@@ -1,0 +1,16 @@
+services:
+  sommeilenor:
+    build: .
+    image: sommeilenor:local
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "127.0.0.1:${SOMMEILENOR_PORT:-8000}:8000"
+    volumes:
+      - sommeilenor-data:/data
+      - ./backups:/backups
+
+volumes:
+  sommeilenor-data:

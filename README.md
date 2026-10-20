@@ -15,8 +15,7 @@ context around each night, then export the records for later analysis.
 - Open email/password registration, isolated account data and private feature suggestions.
 
 Garmin integration, correlations, manual sleep metrics, reminders and offline
-writes are outside this MVP.
-The application has not been implemented yet.
+writes are outside this MVP. No production deployment is part of this repository.
 
 ## Planning
 
@@ -28,12 +27,21 @@ are in `docs/mvp-questions.md`. Original questionnaire answers are preserved in
 Confirmed requirements and implementation defaults are distinguished explicitly.
 No blocking collection-scope question remains; deployment configuration comes later.
 
-## Selected implementation
+## Implementation
 
-React/TypeScript PWA, Python/FastAPI API and SQLite, packaged with Docker for
-an existing HTTPS reverse proxy. The user delegated stack selection for efficient
-development; no application is delivered yet. Server persistence provides
-cross-device access; journal writes require a connection.
+React/TypeScript PWA (repository root, `src/`), Python/FastAPI API with SQLite
+(`backend/`), packaged as one Docker image for an existing HTTPS reverse proxy.
+Server persistence provides cross-device access; journal writes require a
+connection and are never queued offline.
+
+- Local startup, container, reverse proxy, backup/restore: `docs/operations.md`.
+- Export structure and future Garmin joins: `docs/export-format.md`.
+
+```sh
+(cd backend && uv sync && uv run pytest)   # API tests
+npm ci && npm test && npm run build        # PWA tests and build
+docker compose up -d --build               # container on 127.0.0.1:8000
+```
 
 ## Repository policy
 

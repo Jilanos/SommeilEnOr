@@ -1,0 +1,14 @@
+.git
+node_modules
+dist
+backend/.venv
+backend/.pytest_cache
+backend/.ruff_cache
+**/__pycache__
+data
+backups
+exports
+logics
+docs
+.env
+.env.*

@@ -4,7 +4,7 @@ Sources: the original user-edited questionnaires are preserved in
 `mvp-answers-round-1.md` and `mvp-answers-round-2.md`. Four subsequent chat replies
 confirmed account policy, sugar/evening drink detail, private suggestions and the
 strict day boundary. This document supersedes the unresolved F1–F7 checklist.
-Implementation has not started.
+Implementation is delivered by `task_001_orchestrate_sommeilenor_collection_mvp_delivery`.
 
 ## Confirmed collection behavior
 
