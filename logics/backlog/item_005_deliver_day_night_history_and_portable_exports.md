@@ -1,14 +1,14 @@
 ## item_005_deliver_day_night_history_and_portable_exports - Deliver day night history and portable exports
 > From version: 1.0.0
 > Schema version: 1.0
-> Status: Ready
+> Status: Done
 > Understanding: 90%
 > Confidence: 85%
-> Progress: 0%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 15:22:14
+> Indicators reviewed: 2026-10-20 15:49:22
 
 # AI Context
 All-history JSON/CSV must preserve owner isolation, portions/intensity, sugar time and independent stress. Export favorites/suggestions separately and never invent actual sleep intervals.
@@ -50,3 +50,9 @@ All-history JSON/CSV must preserve owner isolation, portions/intensity, sugar ti
 # Priority
 - Priority: High
 - Rationale: useful history and lossless export complete the collection promise.
+
+# Tasks
+- `task_001_orchestrate_sommeilenor_collection_mvp_delivery`
+
+# Notes
+- Task `task_001_orchestrate_sommeilenor_collection_mvp_delivery` was finished via `logics-manager flow finish task` on 2026-10-20.

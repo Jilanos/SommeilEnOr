@@ -1,14 +1,14 @@
 ## item_001_define_tracking_days_nights_and_collection_data_contracts - Define tracking days nights and collection data contracts
 > From version: 1.0.0
 > Schema version: 1.0
-> Status: Ready
+> Status: Done
 > Understanding: 90%
 > Confidence: 85%
-> Progress: 0%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 15:22:14
+> Indicators reviewed: 2026-10-20 15:49:22
 
 # AI Context
 Strict 04:00 assignment with manual overrides is settled, including 05:00 events. Habitual 23:30–07:00 is informational, not measured sleep. Define owner-scoped journal and suggestion contracts.
@@ -50,3 +50,9 @@ Strict 04:00 assignment with manual overrides is settled, including 05:00 events
 # Priority
 - Priority: High
 - Rationale: temporal identity and missingness are dependencies of every capture screen.
+
+# Tasks
+- `task_001_orchestrate_sommeilenor_collection_mvp_delivery`
+
+# Notes
+- Task `task_001_orchestrate_sommeilenor_collection_mvp_delivery` was finished via `logics-manager flow finish task` on 2026-10-20.

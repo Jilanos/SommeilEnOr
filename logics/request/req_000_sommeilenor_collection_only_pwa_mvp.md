@@ -1,13 +1,13 @@
 ## req_000_sommeilenor_collection_only_pwa_mvp - SommeilEnOr collection-only PWA MVP
 > From version: 1.0.0
 > Schema version: 1.0
-> Status: Ready
+> Status: Done
 > Understanding: 95%
 > Confidence: 90%
 > Complexity: High
 > Theme: Personal sleep context collection
 > Reminder: Update status/understanding/confidence and linked backlog/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 15:22:13
+> Indicators reviewed: 2026-10-20 15:49:21
 
 # AI Context
 Round 1/2 and final chat confirmations are incorporated. Collection behavior is specified; remaining activity labels and ml units are documented implementation defaults. No application is implemented yet.

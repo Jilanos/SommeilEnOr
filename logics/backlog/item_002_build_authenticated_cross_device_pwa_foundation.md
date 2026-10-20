@@ -1,14 +1,14 @@
 ## item_002_build_authenticated_cross_device_pwa_foundation - Build authenticated cross-device PWA foundation
 > From version: 1.0.0
 > Schema version: 1.0
-> Status: Ready
+> Status: Done
 > Understanding: 90%
 > Confidence: 85%
-> Progress: 0%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 15:22:14
+> Indicators reviewed: 2026-10-20 15:49:22
 
 # AI Context
 Open email/password registration with private isolated data is confirmed. Online-only quick actions; verify owner checks on guessed IDs and exports, including suggestions and favorites.
@@ -48,3 +48,9 @@ Open email/password registration with private isolated data is confirmed. Online
 # Priority
 - Priority: High
 - Rationale: access control and reliable persistence precede personal-data collection.
+
+# Tasks
+- `task_001_orchestrate_sommeilenor_collection_mvp_delivery`
+
+# Notes
+- Task `task_001_orchestrate_sommeilenor_collection_mvp_delivery` was finished via `logics-manager flow finish task` on 2026-10-20.

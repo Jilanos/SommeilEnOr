@@ -1,14 +1,14 @@
 ## item_004_collect_meal_night_context_and_daily_assessments - Collect meal night context and daily assessments
 > From version: 1.0.0
 > Schema version: 1.0
-> Status: Ready
+> Status: Done
 > Understanding: 90%
 > Confidence: 85%
-> Progress: 0%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 15:22:14
+> Indicators reviewed: 2026-10-20 15:49:22
 
 # AI Context
 Dinner portion, timed manual sugar, daily alcohol/gluten, cat presence only, experienced/anticipated stress and planned waking are specified. Feature suggestions are private app data, not journal events or GitHub issues.
@@ -49,3 +49,9 @@ Dinner portion, timed manual sugar, daily alcohol/gluten, cat presence only, exp
 # Priority
 - Priority: High
 - Rationale: complete the requested factor set after shared capture patterns exist.
+
+# Tasks
+- `task_001_orchestrate_sommeilenor_collection_mvp_delivery`
+
+# Notes
+- Task `task_001_orchestrate_sommeilenor_collection_mvp_delivery` was finished via `logics-manager flow finish task` on 2026-10-20.

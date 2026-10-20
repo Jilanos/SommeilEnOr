@@ -1,12 +1,12 @@
 ## prod_001_sommeilenor_personal_sleep_context_journal - SommeilEnOr personal sleep context journal
 > Date: 2026-10-20
-> Status: Proposed
+> Status: Settled
 > Related request: `req_000_sommeilenor_collection_only_pwa_mvp`
-> Related backlog: `item_001_define_tracking_days_nights_and_collection_data_contracts`, `item_002_build_authenticated_cross_device_pwa_foundation`, `item_003_collect_repeated_beverages_physical_activities_and_naps`, `item_004_collect_meal_night_context_and_daily_assessments`, `item_005_deliver_day_night_history_and_portable_exports`, `item_006_package_and_verify_collection_mvp_for_self_hosting`
+> Related backlog: `item_001_define_tracking_days_nights_and_collection_data_contracts`
 > Related task: `task_001_orchestrate_sommeilenor_collection_mvp_delivery`
 > Related architecture: (none yet)
 > Reminder: Update status, linked refs, scope, decisions, success signals, and open questions when you edit this doc.
-> Indicators reviewed: 2026-10-20 15:22:13
+> Indicators reviewed: 2026-10-20 15:49:22
 
 # Overview
 A fast French PWA to collect daily and nightly context and export it for later sleep analysis.
@@ -64,5 +64,5 @@ flowchart LR
 - Domain/proxy configuration is a later deployment input.
 
 # References
-- Product back-reference: `req_000_sommeilenor_collection_only_pwa_mvp`
+- Product back-reference: `item_001_define_tracking_days_nights_and_collection_data_contracts`
 - Task back-reference: `task_001_orchestrate_sommeilenor_collection_mvp_delivery`

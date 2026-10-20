@@ -1,14 +1,14 @@
 ## item_003_collect_repeated_beverages_physical_activities_and_naps - Collect repeated beverages physical activities and naps
 > From version: 1.0.0
 > Schema version: 1.0
-> Status: Ready
+> Status: Done
 > Understanding: 90%
 > Confidence: 85%
-> Progress: 0%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 15:22:14
+> Indicators reviewed: 2026-10-20 15:49:22
 
 # AI Context
 Separate intakes and favorites; one activity per session with intensity; naps start/duration. Catalog defaults are explicit; evening non-caffeinated context is a boolean rather than a duplicate drink.
@@ -49,3 +49,9 @@ Separate intakes and favorites; one activity per session with intensity; naps st
 # Priority
 - Priority: High
 - Rationale: timed repeated events are the core collection workflow.
+
+# Tasks
+- `task_001_orchestrate_sommeilenor_collection_mvp_delivery`
+
+# Notes
+- Task `task_001_orchestrate_sommeilenor_collection_mvp_delivery` was finished via `logics-manager flow finish task` on 2026-10-20.
