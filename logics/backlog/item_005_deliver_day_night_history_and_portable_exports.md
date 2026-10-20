@@ -8,20 +8,20 @@
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 13:00:35
+> Indicators reviewed: 2026-10-20 14:10:12
 
 # AI Context
-The export is the bridge to future external Garmin comparison. Preserve raw dates, timezone, stable associations, component detail and missingness without analysis.
+All history must remain editable and exportable with distinct anticipated stress and nominal night links. F7 confirms formats; preserve any notes/favorites introduced by resolved decisions.
 
 # Problem
 - The collection MVP must already produce reliable inputs for later external comparisons.
 
 # Scope
 - In:
-  - Day/night navigation, historical editing, deletion and completion state.
-  - Versioned complete JSON plus normalized CSV bundle and data dictionary.
-  - All repeated events, components, daily assessments and associations included.
-  - Document future Garmin alignment by wake date and actual timezone; no integration implemented.
+  - Day/night navigation with unrestricted historical creation, editing, deletion and missingness; no mandatory daily recap.
+  - All-history export; confirm versioned JSON and normalized CSV bundle in F7 and document the data dictionary.
+  - Include repeated events, favorites, any confirmed notes, distinct stress assessments and editable nominal-night associations.
+  - Document future Garmin matching by nominal night date and stored offsets, without measured wake dates or integration.
 - Out:
   - Garmin integration, correlations and production deployment.
 
@@ -31,10 +31,10 @@ The export is the bridge to future external Garmin comparison. Preserve raw date
 - AC3: Ensure exports are authenticated, omit secrets, and contain no fabricated Garmin or correlation fields.
 
 # AC Traceability
-- request-AC2 -> This backlog slice. Proof: Planned validation: timestamp, timezone, boundary and editable main-night contract examples.
-- request-AC7 -> This backlog slice. Proof: Planned validation: stable entity identity, completion state and edit/delete behavior preserve missingness.
-- request-AC8 -> This backlog slice. Proof: Planned validation: versioned export contract and synthetic completeness comparison cover every collected entity.
-- request-AC9 -> This backlog slice. Proof: Planned validation: data dictionary defines future external Garmin joins without adding imports or analysis.
+- request-AC2 -> This backlog slice. Proof: Planned validation: Preserve actual timestamps and offsets alongside a tracking-day date and stable editable main-night association; apply a 04:00 local boundary in Europe/Paris, test midnight/boundary/DST/manual reassignment, and create nominal night IDs without requiring actual sleep metrics.
+- request-AC7 -> This backlog slice. Proof: Planned validation: Provide history with unrestricted past creation/correction and deletion, preserve repeated entries and explicit negative versus missing answers without a mandatory recap; keep the factor list fixed and resolve F6 before adding the requested note control near actions.
+- request-AC8 -> This backlog slice. Proof: Planned validation: Export all history with complete collected entities and relationships, IDs, timezone/offset, original timestamps, units, missingness, tracking days, night links and distinct stress semantics; confirm versioned JSON and normalized CSV bundle in F7 and verify completeness using synthetic round-trip fixtures.
+- request-AC9 -> This backlog slice. Proof: Planned validation: Keep Garmin imports/synchronization/credentials, correlations, health recommendations, manual sleep measurements and reminders outside the MVP; document future external Garmin joins using nominal night labels without inventing actual bedtime/wake time or Garmin values.
 
 # Decision framing
 - Product framing: Not needed

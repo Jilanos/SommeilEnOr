@@ -6,29 +6,33 @@ context around each night, then export the records for later analysis.
 ## MVP
 
 - A French progressive web app accessible from phones and desktop browsers.
-- Repeated, timed beverage and physical activity entries.
-- Meal timing, alcohol, gluten, naps, late sugar and evening hot drinks.
-- Cat presence, stress before/after a night, and early wake-up context.
-- Explicit links between a tracking day, events after midnight and its following night.
-- Editing, history and a complete portable export.
+- Online-only quick buttons; repeated timed drinks with volume and reusable favorites.
+- Physical activity with type/start/duration; naps with start and duration.
+- Dinner time, independent alcohol/gluten, late sugar and non-caffeinated evening context.
+- Cat presence, distinct experienced/anticipated stress and planned early waking.
+- Tracking days starting at 04:00 in Europe/Paris, with editable night associations.
+- Unrestricted historical correction and a complete all-history export.
 
-Garmin integration, correlations and health recommendations are outside this MVP.
+Garmin integration, correlations, manual sleep metrics, reminders and offline
+writes are outside this MVP.
 The application has not been implemented yet.
 
 ## Planning
 
 The initial Logics corpus lives in `logics/`. Its scaffold input is
 `logics/scaffold/collection-mvp.json`. Pending product decisions and concrete
-midnight examples are in `docs/mvp-questions.md`.
+midnight examples are in `docs/mvp-questions.md`. The original first-round
+answers are preserved in `docs/mvp-answers-round-1.md`.
 
 Confirmed requirements and proposed defaults are distinguished explicitly.
 Resolve the relevant open decisions before implementing the affected slice.
 
-## Proposed implementation
+## Selected implementation
 
 React/TypeScript PWA, Python/FastAPI API and SQLite, packaged with Docker for
-an existing HTTPS reverse proxy. This stack is a proposal, not a delivered app.
-Use server persistence for cross-device access; decide offline editing separately.
+an existing HTTPS reverse proxy. The user delegated stack selection for efficient
+development; no application is delivered yet. Server persistence provides
+cross-device access; journal writes require a connection.
 
 ## Repository policy
 

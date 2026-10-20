@@ -8,16 +8,17 @@
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 13:00:24
+> Indicators reviewed: 2026-10-20 14:10:12
 
 # AI Context
-Package the implemented collection service with persistent storage and a verified synthetic restore. Hosting configuration and actual deployment remain separate work.
+Containerize the retained stack, verify authenticated online-only operations and restore synthetic records. No production deployment, reminders or manual sleep journal.
 
 # Problem
 - A cross-device journal needs reproducible operations and recoverable persistent storage.
 
 # Scope
 - In:
+  - Use the retained React/TypeScript + FastAPI + SQLite/Docker stack; implement no offline synchronization or reminders.
   - Document local startup and selected dependency versions, container build and generic HTTPS reverse-proxy integration.
   - Use environment templates without real deployment addresses or credentials.
   - Document and exercise backup/restore with synthetic data and persistent volumes.
@@ -31,8 +32,8 @@ Package the implemented collection service with persistent storage and a verifie
 - AC3: Run the relevant automated checks and mobile/desktop smoke checks; record evidence without claiming production deployment.
 
 # AC Traceability
-- request-AC1 -> This backlog slice. Proof: AC1: Start a clean instance from documented commands and verify a restart preserves synthetic journal entries.
-- request-AC10 -> This backlog slice. Proof: AC2: Restore a synthetic backup into an isolated instance and compare records and exported links.
+- request-AC1 -> This backlog slice. Proof: Planned validation: Deliver an authenticated French mobile-first installable PWA with online-only quick event buttons and server-persisted records shared across phone and desktop sessions; disconnected or failed saves never appear successful and no offline write queue is implemented.
+- request-AC10 -> This backlog slice. Proof: Planned validation: Provide reproducible local startup, a container deployment artifact, persistent storage and documented backup/restore; verify authentication and isolation of private data, and commit synthetic data only; do not deploy production as part of planning.
 
 # Decision framing
 - Product framing: Not needed

@@ -8,32 +8,33 @@
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 13:00:24
+> Indicators reviewed: 2026-10-20 14:10:12
 
 # AI Context
-Meal and night answers must preserve unknown versus explicit absence. Stress periods and planned versus actual early waking remain product questions.
+Dinner time, separate non-caffeinated context, three-level experienced/anticipated stress and planned early waking are confirmed. Resolve F3-F6 details without adding manual sleep metrics.
 
 # Problem
 - Meal and night context needs clear granularity and meaningful unanswered states.
 
 # Scope
 - In:
-  - Resolve meal granularity, sugar threshold, cat context, stress periods and early-wake fields (questions 9–16).
-  - Capture meal times, alcohol/gluten, late sugar, night cat presence and stress assessments.
-  - Separate planned early wake constraints from observed awakenings if both are selected.
-  - Optional subjective sleep fields only after confirmation.
+  - Dinner time only, independently editable alcohol/gluten and late sugar; resolve F3 granularity and threshold.
+  - Night cat presence and distinct experienced/anticipated absent/medium/high stress; resolve F4/F5 exact detail.
+  - Planned early-wake constraint only; resolve target time and reason in F5.
+  - Fixed initial factors; resolve F6 note-control meaning before implementing that control.
 - Out:
   - Garmin integration, correlations and production deployment.
+  - Manual sleep metrics, actual early-wake measurements, reminders and generic custom factors.
 
 # Acceptance criteria
-- AC1: Save and edit all requested factors while distinguishing unanswered values from explicit negative answers.
-- AC2: Display the exact assessed day or period for each stress answer on both sides of a night, with no contradictory duplicates.
-- AC3: Verify early-wake and late-sugar exports preserve the confirmed meaning, including time and reason where selected.
+- AC1: Save dinner time independently of alcohol/gluten/sugar, cat presence and planned early-wake context; distinguish unanswered from explicit absence.
+- AC2: Preserve separate experienced and anticipated stress at absent/medium/high with explicit assessed periods; editing actual stress does not overwrite anticipation.
+- AC3: Export the agreed planned early-wake and late-sugar meaning; after F6 is answered, verify the requested note control and its data semantics.
 
 # AC Traceability
-- request-AC5 -> This backlog slice. Proof: AC1: Save and edit all requested factors while distinguishing unanswered values from explicit negative answers.
-- request-AC6 -> This backlog slice. Proof: AC2: Display the exact assessed day or period for each stress answer on both sides of a night, with no contradictory duplicates.
-- request-AC7 -> This backlog slice. Proof: AC3: Verify early-wake and late-sugar exports preserve the confirmed meaning, including time and reason where selected.
+- request-AC5 -> This backlog slice. Proof: Planned validation: Capture dinner time only with independent alcohol/gluten answers and late sugar; preserve unknown versus explicit absence, and resolve F3 granularity and the fixed late threshold before implementing dependent validation.
+- request-AC6 -> This backlog slice. Proof: Planned validation: Capture night cat presence, experienced and anticipated stress as separate absent/medium/high values, and a planned early-wake constraint; resolve F4/F5 period/time/reason detail and never substitute actual stress for an earlier anticipation.
+- request-AC7 -> This backlog slice. Proof: Planned validation: Provide history with unrestricted past creation/correction and deletion, preserve repeated entries and explicit negative versus missing answers without a mandatory recap; keep the factor list fixed and resolve F6 before adding the requested note control near actions.
 
 # Decision framing
 - Product framing: Not needed

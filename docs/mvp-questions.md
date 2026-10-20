@@ -1,78 +1,81 @@
-# MVP refinement decisions
+# MVP decisions and follow-up questions
 
-This is a decision checklist, not a record of answers. Requirements explicitly
-requested by the user are confirmed; all defaults below remain proposals.
-No production deployment or application implementation is included in this setup.
+Round 1 answers are preserved verbatim in `mvp-answers-round-1.md`. This document
+normalizes those answers without treating unanswered fragments as approval.
+The MVP remains a collection-only French PWA; implementation has not started.
 
-## Confirmed scope
+## Confirmed decisions
 
-Collection-only PWA across phones and computers, with a future export-based
-comparison to Garmin data. Track green tea, black tea and mate with intake times
-and repeatable combinations; physical activity with type, duration and time;
-meal times; alcohol and gluten; naps; late sugar; evening hot drinks; cat presence
-in the bedroom; stress for the days before/after a night; and possible early
-wake-ups. Events after midnight must remain linkable to the relevant following night.
+| Area | Decision |
+| --- | --- |
+| Access | Personal use initially, with registration requested as a possibility; policy and login method still open. |
+| Connectivity | Online only. No offline writes, queue or synchronization engine. Show failed/disconnected save states clearly. |
+| Capture | Quick event buttons. No mandatory daily recap wizard. History remains available for correction. |
+| Tracking day | 04:00 local boundary, with manual reassignment to a night. |
+| Timezone | Europe/Paris initially; retain timestamps and offsets, including DST. Travel behavior is not specified. |
+| Beverages | Distinct green tea, black tea, mate and infusions; record volume and intake time. Custom categories and volume unit still need confirmation. |
+| Combinations | Repeated separate intakes and reusable favorites. Mixed-ingredient intakes are not requested. |
+| Exercise | Repeatable activity entries with type, start time and duration. Initial types and intensity/compound-session options still open. |
+| Meals | Dinner time only. Alcohol and gluten are independent of the dinner record; their granularity still open. |
+| Late sugar | Must be recorded; yes/no versus timed entries and the fixed late threshold remain unresolved. |
+| Evening hot drinks | A distinct non-caffeinated evening context; not inferred from caffeinated intakes. Field detail still open. |
+| Naps | Start time plus duration. |
+| Cat | Presence in the bedroom; recording cat-caused awakenings remains unresolved. |
+| Stress | Absent / medium / high. Keep experienced stress and anticipated stress separate; exact assessed periods still need confirmation. |
+| Early waking | A planned constraint, not an observed sleep metric. Time and reason fields still open. |
+| Sleep | No manual bedtime, wake time, sleep quality or fatigue journal. Sleep measurements will come from Garmin later; no Garmin integration in this MVP. |
+| History | Unrestricted past entry and correction. |
+| Extensibility | Fixed initial factors. A note near each action is requested, but its meaning needs clarification. |
+| Reminders | None. |
+| Export | All history. JSON and normalized CSV remain the recommended formats, pending explicit format confirmation. |
+| Hosting | Confirm domain/proxy integration later; authentication and backup/restore precede production use. |
+| Stack | User delegates the choice for efficient development: React/TypeScript, FastAPI and SQLite with Docker are retained. |
 
-## Decisions to resolve
+## Follow-up questions
 
-1. Access: one private account initially, or multiple isolated accounts? Preferred
-   login method? Suggested default: single account, closed registration.
-2. Connectivity: online-first with an explicit offline state, or offline creation
-   and editing with synchronization? If offline is required, choose conflict
-   behavior and device persistence expectations before implementing it.
-3. Intake experience: quick event buttons, a daily recap, or both? Suggested: both.
-4. Tracking day boundary: proposed 04:00 local time with manual correction, or
-   explicit night selection? Must irregular schedules and night shifts be supported?
-5. Timezone: proposed Europe/Paris initially; what should happen while travelling?
-   Preserve the original offset/timezone and calendar timestamp in every case.
-6. Beverages: add coffee, decaf, infusions or custom categories? Record cups,
-   volume, brewing strength, caffeine estimates, or only type and time?
-7. Combinations: repeated separate intakes, several components within one intake,
-   reusable favorites, or all three? Proposed: repeated entries and multi-component
-   intakes; favorites remain optional until confirmed.
-8. Exercise: initial types? Record intensity and multiple activities per session?
-   Proposed essentials: type, start and duration; repeatable sessions.
-9. Meals: all meals or dinner only? Start/end time? Alcohol and gluten attached
-   to meals, standalone events, daily flags, or a combination? Alcohol units?
-10. Late sugar: explicit yes/no, a timed intake, or a rule-derived indicator?
-    What defines late: fixed time or time relative to bedtime? No threshold agreed.
-11. Evening hot drinks: derive from beverage entries (including temperature/context)
-    or use a separate nightly answer? Avoid counting the same drink twice.
-12. Naps: start plus duration, start/end, and optional perceived quality?
-13. Cat: presence only, time present, and/or reported awakenings?
-14. Stress: scale 0–10 or another scale? Full previous/following day assessments,
-    bedtime/morning assessments, or both? Reuse each daily assessment across the
-    adjacent nights rather than creating conflicting copies.
-15. Early waking: planned constraint, observed early awakening, or both? Record
-    time, reason, alarm and ability to fall asleep again? Relative to what target?
-16. Sleep journal: include manual bedtime, wake time, quality and morning fatigue
-    before Garmin exists? These should be optional if accepted.
-17. History: how far back can entries be added/corrected? Suggested: unrestricted
-    past edits; corrected timestamps must re-evaluate the proposed night link.
-18. Extensibility: custom factors/tags in MVP, or a fixed initial list?
-19. Reminders: none, in-app prompts, or push notifications? Reminder times?
-20. Export: JSON and normalized CSV bundle? All history or selectable range?
-    Include raw timestamps, timezone, tracking date, stable night ID, missingness,
-    units and schema version. No Garmin import or credentials in this MVP.
-21. Hosting: confirm subdomain and existing proxy integration later; authentication
-    and backup/restore are prerequisites for production, not deployment approval.
-22. Stack: confirm React/TypeScript + FastAPI + SQLite, or another preference.
+- **F1 — Accounts:** private single account, invitation registration or public
+  registration? Is email/password acceptable? If multiple accounts are enabled,
+  their records and exports must be isolated.
+- **F2 — Beverages and exercise:** confirm custom beverage categories and ml as
+  volume unit. Which initial activity types? Is intensity needed, and should a
+  session contain multiple activity types? Favorites reuse selected values and
+  create new independently editable entries, never overwrite prior intakes.
+- **F3 — Food:** daily yes/no or timestamped intakes for alcohol and gluten?
+  Alcohol quantities/units if timed? Late sugar: manual yes/no or timed intake,
+  and which fixed local threshold? Dinner is just a time, independently editable.
+- **F4 — Evening and cat:** non-caffeinated evening drink as yes/no only, or
+  type/time/volume too? Cat presence only, or also a reported awakening flag?
+  An infusion must not accidentally create two intake records for one drink.
+- **F5 — Stress and early waking:** confirm whether the two stress answers are
+  the experienced stress of the tracking day and anticipated stress for the next
+  day, attached to the following night. Should the planned early-wake constraint
+  include target time and reason? Never replace anticipation with actual stress.
+- **F6 — Notes:** a private comment on each entry, a feature-suggestion control
+  beside every action, or visible explanations of future options? These imply
+  different data and UI requirements. Do not silently implement one meaning.
+- **F7 — Time and export:** confirm JSON plus CSV for all history and a fixed
+  Europe/Paris MVP without special travel handling. During a nocturnal awakening,
+  should the default suggest the ongoing night or apply the 04:00 rule with a
+  manual override? The app cannot know sleep intervals without sleep data.
 
-## Midnight scenarios requiring agreement
+## Midnight convention
 
-Under the proposed 04:00 boundary, an intake Tuesday at 00:30 belongs to Monday's
-tracking day and its following main night, labelled by Tuesday's wake date.
-An intake Tuesday at 08:00 belongs to Tuesday's tracking day and the night ending
-Wednesday. Calendar dates are never rewritten. The night association is explicit
-and editable; the boundary is only a default assignment rule.
+With the confirmed 04:00 boundary, an intake Tuesday at 00:30 belongs by default
+to Monday's tracking day and the main night nominally ending Tuesday. An intake
+Tuesday at 08:00 belongs to Tuesday's tracking day and the night nominally ending
+Wednesday. At exactly 04:00 the new tracking day starts. Calendar timestamps
+remain unchanged, and manual association overrides are retained.
 
-Clarify an intake during a nocturnal awakening, a bedtime after 04:00, no main
-sleep that day, multiple main sleeps, travel across timezones, and DST transitions.
-Do not infer actual sleep intervals solely from the tracking-day boundary.
+Night labels are nominal dates for future comparison, not measured wake dates.
+No actual bedtime or wake time is required to create a night identifier. DST
+changes must preserve actual offsets and order. No sleep interval is inferred
+from the tracking-day boundary. Unusual nocturnal events remain part of F7.
 
-## Analysis readiness
+## Missingness and deferred scope
 
-An unanswered field is unknown, not a negative answer. A day without events is
-not automatically a completed day. Explicit none/not-applicable responses and
-completion state must survive export. Correlation, causal interpretation and
-automated improvement recommendations are deferred.
+Unanswered is not absent, and no logged event does not prove no intake. Explicit
+negative answers must survive exports without a mandatory recap flow. A fixed
+factor list does not imply that custom beverage categories have been approved.
+
+Garmin imports, correlations, recommendations, reminders, manual sleep metrics,
+offline writes and production deployment are outside this delivery plan's MVP.

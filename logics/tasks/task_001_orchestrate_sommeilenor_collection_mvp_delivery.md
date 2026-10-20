@@ -8,17 +8,18 @@
 > Complexity: Medium
 > Theme: Implementation delivery
 > Reminder: Update status/understanding/confidence/progress and linked request/backlog references when you edit this doc.
-> Indicators reviewed: 2026-10-20 13:00:24
+> Indicators reviewed: 2026-10-20 14:10:11
 
 # AI Context
-Deliver shared time/data contracts before capture screens, and retain complete export semantics. Resolve slice-specific questions before implementation; keep task progress at zero until application work starts.
+Round 1 is integrated throughout the chain and scaffold. Resolve F1-F7 only where relevant; then implement the existing prioritized slices. Application progress remains zero.
 
 # Context
-- Deliver the collection-only application described by the request. The current repository setup does not implement any application acceptance criterion.
-- Product refinements are recorded in docs/mvp-questions.md; the initial stack and 04:00 boundary remain proposals.
+- Deliver the online-only collection application; current work refines planning only.
+- Confirmed decisions and unresolved F1-F7 are in docs/mvp-questions.md; original answers are preserved separately.
+- The 04:00 boundary, favorites, no manual sleep journal and selected stack are settled.
 
 # Plan
-- [ ] 1. Resolve the product decisions required by each slice with the user; update acceptance criteria through the Logics workflow before dependent implementation.
+- [ ] 1. Apply confirmed round 1 answers and resolve only the relevant F1-F7 follow-ups before dependent implementation; retain this existing request chain.
 - [ ] 2. Deliver High-priority temporal/data contracts first, then authenticated PWA foundation.
 - [ ] 3. Deliver High-priority repeated events, meal/night assessments, then history and full export.
 - [ ] 4. Deliver Medium-priority packaging and restore verification after the functional slices.
