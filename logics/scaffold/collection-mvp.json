@@ -13,32 +13,35 @@
       "Export collected data for later comparison with Garmin outside the MVP."
     ],
     "context": [
-      "Round 1 user answers are preserved in docs/mvp-answers-round-1.md and normalized in docs/mvp-questions.md; F1-F7 are the remaining follow-ups.",
-      "Confirmed: online-only quick capture, separate repeated intakes with reusable favorites, 04:00 tracking-day boundary with manual reassignment and Europe/Paris initially.",
-      "Confirmed: green tea, black tea, mate and infusions with volume; repeatable activity type/start/duration; dinner time only; naps start/duration; non-caffeinated evening drink context separate from caffeinated intakes.",
-      "Confirmed: stress absent/medium/high with experienced and anticipated stress kept distinct; early waking is a planned constraint; unrestricted past corrections; fixed factors; no reminders or manual sleep measurements.",
-      "Pending F1-F7: registration/login policy, custom drink categories and units, exercise options, alcohol/gluten granularity, late-sugar rule, drink/cat detail, exact stress periods, early-wake fields, note meaning, export formats and unusual night defaults.",
-      "The user delegates stack selection: retain React/TypeScript, FastAPI, SQLite and Docker. Domain/proxy integration remains a later hosting decision.",
-      "Public source repository; personal data and Garmin exports remain private. Garmin integration, correlations and production deployment are outside current work."
+      "Round 1 and round 2 user edits are preserved in docs/mvp-answers-round-1.md and docs/mvp-answers-round-2.md. docs/mvp-questions.md consolidates them and the four subsequent chat confirmations.",
+      "Confirmed: open email/password registration with private per-account data; online-only quick capture; separate repeated drink intakes and reusable favorites.",
+      "Confirmed: strict 04:00 Europe/Paris tracking-day boundary with manual night reassignment. Habitual 23:30–07:00 is informational only and never changes assignment or creates sleep measurements.",
+      "Confirmed: green tea, black tea, mate and infusions with volume; one activity type per session with intensity, start and duration; naps start/duration.",
+      "Confirmed: independent daily alcohol/gluten yes/no; dinner time plus small/medium/big/massive quantity; manual late-sugar yes/no plus time when present; non-caffeinated evening drink yes/no; cat presence only.",
+      "Confirmed: separate experienced tracking-day stress and anticipated next-day stress, each absent/medium/high; planned early-wake constraint with target time and reason; unrestricted past corrections.",
+      "Confirmed: a private free-text feature-suggestion control near every action, with an in-app suggestion list and no automatic GitHub publication. Suggestions are separate from health journal events.",
+      "Implementation defaults explicitly documented: volume in ml; initial activity types walking/running/cycling/strength/other; intensity low/medium/high; fixed drink catalog; versioned JSON and CSV all-history export; no special travel mode.",
+      "User delegates stack selection: React/TypeScript, FastAPI, SQLite and Docker. Public source only; no personal records or credentials. Hosting integration remains a later operational step.",
+      "Excluded: offline writes, mandatory recap, generic custom factors, mixed-ingredient drinks, reminders, manual sleep measurements, cat awakening metrics, Garmin integration, correlation and production deployment."
     ],
     "acceptance_criteria": [
-      "AC1: Deliver an authenticated French mobile-first installable PWA with online-only quick event buttons and server-persisted records shared across phone and desktop sessions; disconnected or failed saves never appear successful and no offline write queue is implemented.",
-      "AC2: Preserve actual timestamps and offsets alongside a tracking-day date and stable editable main-night association; apply a 04:00 local boundary in Europe/Paris, test midnight/boundary/DST/manual reassignment, and create nominal night IDs without requiring actual sleep metrics.",
-      "AC3: Support separate repeated timed beverage intakes with distinct green tea, black tea, mate and infusion categories, volume and reusable favorites; keep non-caffeinated evening hot-drink context distinct, resolve F2/F4 detail and avoid duplicate intake records.",
-      "AC4: Support repeatable physical activities with type, start and duration and naps with start plus duration; validate duration consistency, and resolve F2 before adding intensity or multi-activity sessions.",
-      "AC5: Capture dinner time only with independent alcohol/gluten answers and late sugar; preserve unknown versus explicit absence, and resolve F3 granularity and the fixed late threshold before implementing dependent validation.",
-      "AC6: Capture night cat presence, experienced and anticipated stress as separate absent/medium/high values, and a planned early-wake constraint; resolve F4/F5 period/time/reason detail and never substitute actual stress for an earlier anticipation.",
-      "AC7: Provide history with unrestricted past creation/correction and deletion, preserve repeated entries and explicit negative versus missing answers without a mandatory recap; keep the factor list fixed and resolve F6 before adding the requested note control near actions.",
-      "AC8: Export all history with complete collected entities and relationships, IDs, timezone/offset, original timestamps, units, missingness, tracking days, night links and distinct stress semantics; confirm versioned JSON and normalized CSV bundle in F7 and verify completeness using synthetic round-trip fixtures.",
-      "AC9: Keep Garmin imports/synchronization/credentials, correlations, health recommendations, manual sleep measurements and reminders outside the MVP; document future external Garmin joins using nominal night labels without inventing actual bedtime/wake time or Garmin values.",
-      "AC10: Provide reproducible local startup, a container deployment artifact, persistent storage and documented backup/restore; verify authentication and isolation of private data, and commit synthetic data only; do not deploy production as part of planning."
+      "AC1: Deliver an authenticated French mobile-first installable online-only PWA with quick event buttons, open email/password registration and server-persisted records shared across devices; enforce per-account isolation and truthful failed/offline saves without an offline queue.",
+      "AC2: Preserve actual timestamps/offsets, tracking dates and stable editable nominal night IDs; apply the strict 04:00 Europe/Paris boundary including 05:00, midnight, DST and manual overrides; habitual 23:30–07:00 is informational and never measured or used to override assignment.",
+      "AC3: Support separate repeated timed green tea, black tea, mate and infusion intakes with positive volume in ml and reusable favorites creating independent entries; evening non-caffeinated drink is a separate yes/no/unknown context flag, not an inferred or duplicated intake.",
+      "AC4: Support repeated activity sessions with exactly one type, low/medium/high intensity, start and positive duration; support naps with start plus positive duration and validate interval consistency.",
+      "AC5: Capture dinner time plus small/medium/big/massive quantity, independent daily alcohol/gluten yes/no/unknown, and manual late-sugar yes/no/unknown plus time when yes; no automatic late threshold or alcohol quantity is required.",
+      "AC6: Capture cat presence only, separate experienced tracking-day and anticipated next-day stress at absent/medium/high, and a planned early-wake constraint with target time and reason; preserve unknown answers and never overwrite anticipation with later experienced stress.",
+      "AC7: Provide unrestricted past create/edit/delete history and fixed factors without a mandatory recap; place a private free-text feature-suggestion control near every action and provide an owner-only suggestion list, separate from journal events and without GitHub publication.",
+      "AC8: Export all history in versioned JSON and a normalized CSV bundle with stable IDs, actual timestamps/offsets, units, missingness, dinner quantity, intensity, distinct stress periods, tracking days and editable nominal night links; include favorites and suggestions in separately identified sections/files and verify completeness with synthetic fixtures.",
+      "AC9: Keep Garmin imports/synchronization/credentials, correlations, recommendations, manual sleep metrics, reminders, cat awakening metrics and automatic GitHub issue creation outside the MVP; document future external Garmin joins without fabricating sleep intervals.",
+      "AC10: Provide reproducible local startup, a container artifact, persistent storage and documented backup/restore for the retained stack; verify registration and cross-account read/write/delete/export/suggestion isolation with synthetic data; do not deploy production as part of planning."
     ]
   },
   "product": {
     "title": "SommeilEnOr personal sleep context journal",
     "overview": "A fast French PWA to collect daily and nightly context and export it for later sleep analysis.",
     "goals": [
-      "Fast online-only quick-action capture with reusable favorites and unrestricted historical correction.",
+      "Fast online-only quick-action capture with reusable favorites, unrestricted corrections and isolated accounts.",
       "Reliable temporal links across midnight and devices.",
       "Complete portable records with explicit missingness."
     ],
@@ -67,18 +70,18 @@
         "Midnight and ambiguous missing values can make future sleep comparisons incorrect."
       ],
       "scope_in": [
-        "Use the confirmed 04:00 Europe/Paris tracking-day boundary and manual main-night reassignment; resolve F7 unusual nocturnal events.",
-        "Define tracking days, nominal nights, intake/session records, favorites, assessments, stable IDs, units and missingness; no manual sleep metrics are required.",
-        "Resolve F3/F5 granularity and assessed periods before finalizing related contracts; keep anticipated and experienced stress distinct.",
+        "Use strict 04:00 Europe/Paris day assignment including events during nocturnal awakenings; manual override remains available.",
+        "Define nominal nights without measured sleep data, dinner quantity enum, stress periods, intensity, favorite identity and separate private feature suggestions.",
+        "Preserve original timestamps/offsets and missingness; habitual 23:30–07:00 is informational only.",
         "Priority rationale: temporal identity and missingness are dependencies of every capture screen."
       ],
       "scope_out": [
         "Garmin integration, correlations and production deployment."
       ],
       "acceptance_criteria": [
-        "AC1: Document 00:30, 03:59, 04:00 and 08:00 mapping, DST/offset preservation and manual override without requiring bedtime or actual wake time.",
-        "AC2: Define experienced/anticipated stress as distinct absent/medium/high fields with explicit assessed periods resolved in F5.",
-        "AC3: Define unknown/none/not-applicable semantics, reusable favorite identity and migration-safe full-history export contracts."
+        "AC1: Specify 00:30, 03:59, 04:00, 05:00 and 08:00 assignment plus DST/offset preservation and manual override; habitual hours have no assignment effect.",
+        "AC2: Define separate experienced tracking-day and anticipated next-day stress fields, each absent/medium/high with unknown distinct from absent.",
+        "AC3: Define dinner quantity, intensity, positive volume/duration, timed late-sugar validation, owner IDs, favorites and private suggestion contracts in the full export schema."
       ]
     },
     {
@@ -95,19 +98,19 @@
         "A public repository must deliver a private journal usable across devices."
       ],
       "scope_in": [
-        "Confirm registration/login policy in F1; online-only behavior and chosen React/TypeScript + FastAPI + SQLite stack are settled.",
-        "French responsive quick-action shell, install manifest and service worker/update behavior without journal write caching.",
-        "Authenticated API, server persistence, sessions, mutation protection and account data isolation if registration is enabled.",
+        "Open email/password registration, per-account sessions and isolated private server persistence using the selected stack.",
+        "French responsive quick-action shell, HTTPS installability and service worker updates without journal write caching.",
         "Visible pending/saved/failed/disconnected states; no offline queue or automatic replay.",
+        "Owner-scoped authorization for events, context, favorites, suggestions and exports; duplicate registration and credential errors are handled safely.",
         "Priority rationale: access control and reliable persistence precede personal-data collection."
       ],
       "scope_out": [
         "Garmin integration, correlations and production deployment."
       ],
       "acceptance_criteria": [
-        "AC1: Verify unauthenticated users cannot read, mutate or export journal data.",
-        "AC2: Demonstrate a saved record is visible on a second authenticated browser and layouts work on mobile and desktop.",
-        "AC3: Verify HTTPS installability and updates; offline/failed writes show a truthful state, create no queued journal entry and are not silently replayed."
+        "AC1: Register two accounts and verify unauthenticated access fails and neither account can read/mutate/delete/export the other account data, favorites or suggestions, including guessed IDs.",
+        "AC2: Demonstrate a saved record is visible on a second browser of the same account and layouts work on mobile/desktop.",
+        "AC3: Verify HTTPS installability/updates and failed/offline save states; no offline entry is silently queued or replayed."
       ]
     },
     {
@@ -124,19 +127,20 @@
         "Repeated daily events cannot be represented by one boolean per category."
       ],
       "scope_in": [
-        "Green tea, black tea, mate and infusions with time and volume; separate repeated intakes and reusable favorites. Resolve custom categories/units in F2.",
-        "Quick create and historical editing; favorites create fresh independently editable entries. Mixed-ingredient composition is outside requested scope.",
-        "Repeatable physical activity type/start/duration and naps start/duration; resolve initial activities and optional intensity/compound sessions in F2.",
-        "Keep non-caffeinated evening context separate and resolve F4 detail without duplicating infusion events.",
+        "Fixed green tea/black tea/mate/infusion catalog, intake time and volume in ml; separate repeated entries and reusable favorites.",
+        "Favorites copy selected values into fresh independently editable entries; a new intake uses its own timestamp, never the favorite creation timestamp.",
+        "One activity type per session with start, positive duration and low/medium/high intensity; start-plus-duration naps.",
+        "Initial activity options walking/running/cycling/strength/other are editable implementation defaults; no mixed sessions or custom factor builder.",
+        "Evening non-caffeinated drink is a separate yes/no/unknown context flag; an infusion intake is not duplicated.",
         "Priority rationale: timed repeated events are the core collection workflow."
       ],
       "scope_out": [
         "Garmin integration, correlations and production deployment."
       ],
       "acceptance_criteria": [
-        "AC1: Save multiple green teas, black tea, mate and infusion records with time and volume; reuse a favorite without overwriting previous entries.",
-        "AC2: Create/edit repeated activity sessions and naps using start plus duration; reject invalid durations and preserve manual night overrides.",
-        "AC3: Keep the non-caffeinated evening context distinct from caffeinated intakes and avoid double counting one infusion as two drinks."
+        "AC1: Save repeated tea/mate/infusion intakes with time/positive ml volume and use a favorite to create a fresh entry without overwriting prior records.",
+        "AC2: Save repeatable single-type activities with intensity and start/duration plus naps; reject invalid quantities and preserve manual night overrides.",
+        "AC3: Keep evening non-caffeinated yes/no/unknown independent of caffeinated intake and never create a duplicate infusion event."
       ]
     },
     {
@@ -153,20 +157,20 @@
         "Meal and night context needs clear granularity and meaningful unanswered states."
       ],
       "scope_in": [
-        "Dinner time only, independently editable alcohol/gluten and late sugar; resolve F3 granularity and threshold.",
-        "Night cat presence and distinct experienced/anticipated absent/medium/high stress; resolve F4/F5 exact detail.",
-        "Planned early-wake constraint only; resolve target time and reason in F5.",
-        "Fixed initial factors; resolve F6 note-control meaning before implementing that control.",
+        "Dinner time plus small/medium/big/massive portion size; independent daily alcohol/gluten yes/no/unknown.",
+        "Manual late sugar yes/no/unknown plus time when yes, without a derived threshold; non-caffeinated evening drink yes/no/unknown.",
+        "Night cat presence only, separate experienced/anticipated three-level stress, planned early-wake constraint with target time/reason.",
+        "Feature-suggestion button near each action opens private free text stored separately from journal entries; provide an owner-only list without external sending.",
         "Priority rationale: complete the requested factor set after shared capture patterns exist."
       ],
       "scope_out": [
         "Garmin integration, correlations and production deployment.",
-        "Manual sleep metrics, actual early-wake measurements, reminders and generic custom factors."
+        "Manual sleep metrics, actual awakenings, reminders, generic custom factors and automatic GitHub issue creation."
       ],
       "acceptance_criteria": [
-        "AC1: Save dinner time independently of alcohol/gluten/sugar, cat presence and planned early-wake context; distinguish unanswered from explicit absence.",
-        "AC2: Preserve separate experienced and anticipated stress at absent/medium/high with explicit assessed periods; editing actual stress does not overwrite anticipation.",
-        "AC3: Export the agreed planned early-wake and late-sugar meaning; after F6 is answered, verify the requested note control and its data semantics."
+        "AC1: Independently create/correct dinner time and portion, alcohol/gluten, timed sugar, evening drink and cat answers; distinguish missing from explicit no.",
+        "AC2: Save experienced tracking-day and anticipated next-day stress separately; planned early waking stores target time/reason without recording actual wake measurements.",
+        "AC3: Open a suggestion control from each action, store its action context and private text, and list it for its owner only; it creates no journal event or external issue."
       ]
     },
     {
@@ -184,19 +188,20 @@
         "The collection MVP must already produce reliable inputs for later external comparisons."
       ],
       "scope_in": [
-        "Day/night navigation with unrestricted historical creation, editing, deletion and missingness; no mandatory daily recap.",
-        "All-history export; confirm versioned JSON and normalized CSV bundle in F7 and document the data dictionary.",
-        "Include repeated events, favorites, any confirmed notes, distinct stress assessments and editable nominal-night associations.",
-        "Document future Garmin matching by nominal night date and stored offsets, without measured wake dates or integration.",
+        "Unrestricted historical create/edit/delete and day/night navigation without a mandatory recap.",
+        "All-history versioned JSON and normalized CSV with a data dictionary; negative and unknown values remain distinct.",
+        "Preserve dinner portion, activity intensity, timed sugar, independent stress periods, raw timestamps and night overrides.",
+        "Include favorites and private suggestions in distinct export sections/files, never as journal events.",
+        "Future Garmin matching uses nominal night date and stored offsets, not fabricated wake times.",
         "Priority rationale: useful history and lossless export complete the collection promise."
       ],
       "scope_out": [
         "Garmin integration, correlations and production deployment."
       ],
       "acceptance_criteria": [
-        "AC1: Export a synthetic journal spanning midnight and DST, repeated events and missing/negative answers; compare every exported entity and relationship to persisted data.",
-        "AC2: Demonstrate historical time edits and night overrides remain consistent in history and export.",
-        "AC3: Ensure exports are authenticated, omit secrets, and contain no fabricated Garmin or correlation fields."
+        "AC1: Compare every persisted synthetic entity/relationship to JSON and CSV export, including repeated events, portion/intensity, timed sugar, stress, favorites, suggestions, midnight/DST and missing/negative answers.",
+        "AC2: Historical corrections and explicit night overrides remain consistent in history and export, without requiring sleep measurements.",
+        "AC3: Exports are owner-only, omit credentials and contain no fabricated Garmin/correlation fields; suggestions stay in a separate section/file."
       ]
     },
     {
@@ -212,7 +217,7 @@
         "A cross-device journal needs reproducible operations and recoverable persistent storage."
       ],
       "scope_in": [
-        "Use the retained React/TypeScript + FastAPI + SQLite/Docker stack; implement no offline synchronization or reminders.",
+        "Use React/TypeScript + FastAPI + SQLite/Docker; verify open registration and cross-account isolation of the online-only app.",
         "Document local startup and selected dependency versions, container build and generic HTTPS reverse-proxy integration.",
         "Use environment templates without real deployment addresses or credentials.",
         "Document and exercise backup/restore with synthetic data and persistent volumes.",
@@ -224,7 +229,7 @@
       ],
       "acceptance_criteria": [
         "AC1: Start a clean instance from documented commands and verify a restart preserves synthetic journal entries.",
-        "AC2: Restore a synthetic backup into an isolated instance and compare records and exported links.",
+        "AC2: Restore a two-account synthetic backup into an isolated instance; compare journal, favorites, suggestions and exports and verify ownership isolation remains intact.",
         "AC3: Run the relevant automated checks and mobile/desktop smoke checks; record evidence without claiming production deployment."
       ]
     }
@@ -232,7 +237,7 @@
   "orchestration_task": {
     "title": "Orchestrate SommeilEnOr collection MVP delivery",
     "plan": [
-      "Apply confirmed round 1 answers and resolve only the relevant F1-F7 follow-ups before dependent implementation; retain this existing request chain.",
+      "Use the consolidated round 1/2 decisions and chat confirmations in docs/mvp-questions.md; implement the existing prioritized slices with documented editable defaults, without reopening answered questions.",
       "Deliver High-priority temporal/data contracts first, then authenticated PWA foundation.",
       "Deliver High-priority repeated events, meal/night assessments, then history and full export.",
       "Deliver Medium-priority packaging and restore verification after the functional slices.",

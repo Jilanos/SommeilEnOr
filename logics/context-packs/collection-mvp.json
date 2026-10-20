@@ -29,7 +29,7 @@
       "path": "logics/request/req_000_sommeilenor_collection_only_pwa_mvp.md",
       "ref": "req_000_sommeilenor_collection_only_pwa_mvp",
       "schema_version": "1.0",
-      "status": "Draft",
+      "status": "Ready",
       "title": "SommeilEnOr collection-only PWA MVP"
     },
     {
@@ -135,7 +135,7 @@
     "companion_doc_count": 0,
     "doc_count": 5
   },
-  "generated_at": "2026-10-20T12:10:25Z",
+  "generated_at": "2026-10-20T13:23:13Z",
   "handoff": {
     "companion_doc_count": 0,
     "enabled": false,

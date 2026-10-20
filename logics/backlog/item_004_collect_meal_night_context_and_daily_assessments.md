@@ -8,33 +8,33 @@
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 14:10:12
+> Indicators reviewed: 2026-10-20 15:22:14
 
 # AI Context
-Dinner time, separate non-caffeinated context, three-level experienced/anticipated stress and planned early waking are confirmed. Resolve F3-F6 details without adding manual sleep metrics.
+Dinner portion, timed manual sugar, daily alcohol/gluten, cat presence only, experienced/anticipated stress and planned waking are specified. Feature suggestions are private app data, not journal events or GitHub issues.
 
 # Problem
 - Meal and night context needs clear granularity and meaningful unanswered states.
 
 # Scope
 - In:
-  - Dinner time only, independently editable alcohol/gluten and late sugar; resolve F3 granularity and threshold.
-  - Night cat presence and distinct experienced/anticipated absent/medium/high stress; resolve F4/F5 exact detail.
-  - Planned early-wake constraint only; resolve target time and reason in F5.
-  - Fixed initial factors; resolve F6 note-control meaning before implementing that control.
+  - Dinner time plus small/medium/big/massive portion size; independent daily alcohol/gluten yes/no/unknown.
+  - Manual late sugar yes/no/unknown plus time when yes, without a derived threshold; non-caffeinated evening drink yes/no/unknown.
+  - Night cat presence only, separate experienced/anticipated three-level stress, planned early-wake constraint with target time/reason.
+  - Feature-suggestion button near each action opens private free text stored separately from journal entries; provide an owner-only list without external sending.
 - Out:
   - Garmin integration, correlations and production deployment.
-  - Manual sleep metrics, actual early-wake measurements, reminders and generic custom factors.
+  - Manual sleep metrics, actual awakenings, reminders, generic custom factors and automatic GitHub issue creation.
 
 # Acceptance criteria
-- AC1: Save dinner time independently of alcohol/gluten/sugar, cat presence and planned early-wake context; distinguish unanswered from explicit absence.
-- AC2: Preserve separate experienced and anticipated stress at absent/medium/high with explicit assessed periods; editing actual stress does not overwrite anticipation.
-- AC3: Export the agreed planned early-wake and late-sugar meaning; after F6 is answered, verify the requested note control and its data semantics.
+- AC1: Independently create/correct dinner time and portion, alcohol/gluten, timed sugar, evening drink and cat answers; distinguish missing from explicit no.
+- AC2: Save experienced tracking-day and anticipated next-day stress separately; planned early waking stores target time/reason without recording actual wake measurements.
+- AC3: Open a suggestion control from each action, store its action context and private text, and list it for its owner only; it creates no journal event or external issue.
 
 # AC Traceability
-- request-AC5 -> This backlog slice. Proof: Planned validation: Capture dinner time only with independent alcohol/gluten answers and late sugar; preserve unknown versus explicit absence, and resolve F3 granularity and the fixed late threshold before implementing dependent validation.
-- request-AC6 -> This backlog slice. Proof: Planned validation: Capture night cat presence, experienced and anticipated stress as separate absent/medium/high values, and a planned early-wake constraint; resolve F4/F5 period/time/reason detail and never substitute actual stress for an earlier anticipation.
-- request-AC7 -> This backlog slice. Proof: Planned validation: Provide history with unrestricted past creation/correction and deletion, preserve repeated entries and explicit negative versus missing answers without a mandatory recap; keep the factor list fixed and resolve F6 before adding the requested note control near actions.
+- request-AC5 -> This backlog slice. Proof: Planned validation: Capture dinner time plus small/medium/big/massive quantity, independent daily alcohol/gluten yes/no/unknown, and manual late-sugar yes/no/unknown plus time when yes; no automatic late threshold or alcohol quantity is required.
+- request-AC6 -> This backlog slice. Proof: Planned validation: Capture cat presence only, separate experienced tracking-day and anticipated next-day stress at absent/medium/high, and a planned early-wake constraint with target time and reason; preserve unknown answers and never overwrite anticipation with later experienced stress.
+- request-AC7 -> This backlog slice. Proof: Planned validation: Provide unrestricted past create/edit/delete history and fixed factors without a mandatory recap; place a private free-text feature-suggestion control near every action and provide an owner-only suggestion list, separate from journal events and without GitHub publication.
 
 # Decision framing
 - Product framing: Not needed

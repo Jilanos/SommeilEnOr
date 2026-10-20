@@ -8,18 +8,18 @@
 > Complexity: Medium
 > Theme: Implementation delivery
 > Reminder: Update status/understanding/confidence/progress and linked request/backlog references when you edit this doc.
-> Indicators reviewed: 2026-10-20 14:10:11
+> Indicators reviewed: 2026-10-20 15:22:14
 
 # AI Context
-Round 1 is integrated throughout the chain and scaffold. Resolve F1-F7 only where relevant; then implement the existing prioritized slices. Application progress remains zero.
+Final collection decisions are consolidated. Implement existing prioritized slices including open registration, isolation and private feature suggestions. Application progress remains zero.
 
 # Context
-- Deliver the online-only collection application; current work refines planning only.
-- Confirmed decisions and unresolved F1-F7 are in docs/mvp-questions.md; original answers are preserved separately.
-- The 04:00 boundary, favorites, no manual sleep journal and selected stack are settled.
+- Current work finalizes the collection corpus only; no application implementation is claimed.
+- docs/mvp-questions.md records all decisions and documented defaults; original questionnaires are preserved.
+- Shared contracts precede authenticated PWA, repeated events, context/suggestions, complete exports and two-account restore checks.
 
 # Plan
-- [ ] 1. Apply confirmed round 1 answers and resolve only the relevant F1-F7 follow-ups before dependent implementation; retain this existing request chain.
+- [ ] 1. Use the consolidated round 1/2 decisions and chat confirmations in docs/mvp-questions.md; implement the existing prioritized slices with documented editable defaults, without reopening answered questions.
 - [ ] 2. Deliver High-priority temporal/data contracts first, then authenticated PWA foundation.
 - [ ] 3. Deliver High-priority repeated events, meal/night assessments, then history and full export.
 - [ ] 4. Deliver Medium-priority packaging and restore verification after the functional slices.

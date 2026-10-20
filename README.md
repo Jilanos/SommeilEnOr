@@ -7,11 +7,12 @@ context around each night, then export the records for later analysis.
 
 - A French progressive web app accessible from phones and desktop browsers.
 - Online-only quick buttons; repeated timed drinks with volume and reusable favorites.
-- Physical activity with type/start/duration; naps with start and duration.
-- Dinner time, independent alcohol/gluten, late sugar and non-caffeinated evening context.
+- Single-type physical activities with intensity/start/duration; naps with start/duration.
+- Dinner time and portion size, daily alcohol/gluten, timed manual late sugar and evening hot-drink flag.
 - Cat presence, distinct experienced/anticipated stress and planned early waking.
 - Tracking days starting at 04:00 in Europe/Paris, with editable night associations.
-- Unrestricted historical correction and a complete all-history export.
+- Unrestricted historical correction and a complete all-history JSON/CSV export.
+- Open email/password registration, isolated account data and private feature suggestions.
 
 Garmin integration, correlations, manual sleep metrics, reminders and offline
 writes are outside this MVP.
@@ -20,12 +21,12 @@ The application has not been implemented yet.
 ## Planning
 
 The initial Logics corpus lives in `logics/`. Its scaffold input is
-`logics/scaffold/collection-mvp.json`. Pending product decisions and concrete
-midnight examples are in `docs/mvp-questions.md`. The original first-round
-answers are preserved in `docs/mvp-answers-round-1.md`.
+`logics/scaffold/collection-mvp.json`. Confirmed decisions, documented implementation defaults and midnight examples
+are in `docs/mvp-questions.md`. Original questionnaire answers are preserved in
+`docs/mvp-answers-round-1.md` and `docs/mvp-answers-round-2.md`.
 
-Confirmed requirements and proposed defaults are distinguished explicitly.
-Resolve the relevant open decisions before implementing the affected slice.
+Confirmed requirements and implementation defaults are distinguished explicitly.
+No blocking collection-scope question remains; deployment configuration comes later.
 
 ## Selected implementation
 

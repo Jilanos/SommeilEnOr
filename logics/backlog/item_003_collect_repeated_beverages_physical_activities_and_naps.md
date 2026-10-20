@@ -8,32 +8,33 @@
 > Complexity: Medium
 > Theme: Collection MVP
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-10-20 14:10:12
+> Indicators reviewed: 2026-10-20 15:22:14
 
 # AI Context
-Separate repeated beverage intakes with volume, favorites, activity sessions and naps are confirmed. F2/F4 determine optional detail; mixed ingredients are not requested.
+Separate intakes and favorites; one activity per session with intensity; naps start/duration. Catalog defaults are explicit; evening non-caffeinated context is a boolean rather than a duplicate drink.
 
 # Problem
 - Repeated daily events cannot be represented by one boolean per category.
 
 # Scope
 - In:
-  - Green tea, black tea, mate and infusions with time and volume; separate repeated intakes and reusable favorites. Resolve custom categories/units in F2.
-  - Quick create and historical editing; favorites create fresh independently editable entries. Mixed-ingredient composition is outside requested scope.
-  - Repeatable physical activity type/start/duration and naps start/duration; resolve initial activities and optional intensity/compound sessions in F2.
-  - Keep non-caffeinated evening context separate and resolve F4 detail without duplicating infusion events.
+  - Fixed green tea/black tea/mate/infusion catalog, intake time and volume in ml; separate repeated entries and reusable favorites.
+  - Favorites copy selected values into fresh independently editable entries; a new intake uses its own timestamp, never the favorite creation timestamp.
+  - One activity type per session with start, positive duration and low/medium/high intensity; start-plus-duration naps.
+  - Initial activity options walking/running/cycling/strength/other are editable implementation defaults; no mixed sessions or custom factor builder.
+  - Evening non-caffeinated drink is a separate yes/no/unknown context flag; an infusion intake is not duplicated.
 - Out:
   - Garmin integration, correlations and production deployment.
 
 # Acceptance criteria
-- AC1: Save multiple green teas, black tea, mate and infusion records with time and volume; reuse a favorite without overwriting previous entries.
-- AC2: Create/edit repeated activity sessions and naps using start plus duration; reject invalid durations and preserve manual night overrides.
-- AC3: Keep the non-caffeinated evening context distinct from caffeinated intakes and avoid double counting one infusion as two drinks.
+- AC1: Save repeated tea/mate/infusion intakes with time/positive ml volume and use a favorite to create a fresh entry without overwriting prior records.
+- AC2: Save repeatable single-type activities with intensity and start/duration plus naps; reject invalid quantities and preserve manual night overrides.
+- AC3: Keep evening non-caffeinated yes/no/unknown independent of caffeinated intake and never create a duplicate infusion event.
 
 # AC Traceability
-- request-AC3 -> This backlog slice. Proof: Planned validation: Support separate repeated timed beverage intakes with distinct green tea, black tea, mate and infusion categories, volume and reusable favorites; keep non-caffeinated evening hot-drink context distinct, resolve F2/F4 detail and avoid duplicate intake records.
-- request-AC4 -> This backlog slice. Proof: Planned validation: Support repeatable physical activities with type, start and duration and naps with start plus duration; validate duration consistency, and resolve F2 before adding intensity or multi-activity sessions.
-- request-AC7 -> This backlog slice. Proof: Planned validation: Provide history with unrestricted past creation/correction and deletion, preserve repeated entries and explicit negative versus missing answers without a mandatory recap; keep the factor list fixed and resolve F6 before adding the requested note control near actions.
+- request-AC3 -> This backlog slice. Proof: Planned validation: Support separate repeated timed green tea, black tea, mate and infusion intakes with positive volume in ml and reusable favorites creating independent entries; evening non-caffeinated drink is a separate yes/no/unknown context flag, not an inferred or duplicated intake.
+- request-AC4 -> This backlog slice. Proof: Planned validation: Support repeated activity sessions with exactly one type, low/medium/high intensity, start and positive duration; support naps with start plus positive duration and validate interval consistency.
+- request-AC7 -> This backlog slice. Proof: Planned validation: Provide unrestricted past create/edit/delete history and fixed factors without a mandatory recap; place a private free-text feature-suggestion control near every action and provide an owner-only suggestion list, separate from journal events and without GitHub publication.
 
 # Decision framing
 - Product framing: Not needed

@@ -18,7 +18,7 @@ _None_
 
 | Doc | Title | Status | Owner | Progress | Path |
 |---|---|---|---|---|---|
-| [req_000_sommeilenor_collection_only_pwa_mvp](request/req_000_sommeilenor_collection_only_pwa_mvp.md) | SommeilEnOr collection-only PWA MVP | Draft |  |  | request/req_000_sommeilenor_collection_only_pwa_mvp.md |
+| [req_000_sommeilenor_collection_only_pwa_mvp](request/req_000_sommeilenor_collection_only_pwa_mvp.md) | SommeilEnOr collection-only PWA MVP | Ready |  |  | request/req_000_sommeilenor_collection_only_pwa_mvp.md |
 
 ## Backlog
 
