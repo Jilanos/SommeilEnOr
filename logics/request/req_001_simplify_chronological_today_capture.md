@@ -1,13 +1,13 @@
 ## req_001_simplify_chronological_today_capture - Simplify chronological Today capture
 > From version: 0.1.0
 > Schema version: 1.0
-> Status: Blocked
+> Status: In progress
 > Understanding: 100%
 > Confidence: 90%
 > Complexity: High
 > Theme: Capture usability
 > Reminder: Update status/understanding/confidence and linked backlog/task references when you edit this doc.
-> Indicators reviewed: 2026-11-09 17:09:43
+> Indicators reviewed: 2026-11-09 21:32:08
 
 # AI Context
 - Summary: Replace the crowded Today forms with chronological quick capture and compact evening/night questions.

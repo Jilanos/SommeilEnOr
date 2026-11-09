@@ -1,14 +1,14 @@
 ## item_007_simplify_chronological_today_capture - Simplify chronological Today capture
 > From version: 0.1.0
 > Schema version: 1.0
-> Status: Blocked
+> Status: In progress
 > Understanding: 100%
 > Confidence: 90%
-> Progress: 90%
+> Progress: 95%
 > Complexity: High
 > Theme: Operator workflow and runtime integration
 > Reminder: Update status/understanding/confidence/progress and linked request/task references when you edit this doc.
-> Indicators reviewed: 2026-11-09 16:52:51
+> Indicators reviewed: 2026-11-09 21:32:08
 
 # AI Context
 - Summary: Chronological Today capture redesign

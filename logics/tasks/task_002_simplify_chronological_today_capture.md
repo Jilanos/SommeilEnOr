@@ -1,15 +1,15 @@
 ## task_002_simplify_chronological_today_capture - Simplify chronological Today capture
 > From version: 0.1.0
 > Schema version: 1.0
-> Status: Blocked
+> Status: In progress
 > Understanding: 100%
 > Confidence: 90%
-> Progress: 90%
+> Progress: 95%
 > Complexity: Medium
 > Theme: Implementation delivery
 > Reminder: Update status/understanding/confidence/progress and linked request/backlog references when you edit this doc.
 > Owner: Paul
-> Indicators reviewed: 2026-11-09 16:52:51
+> Indicators reviewed: 2026-11-09 21:32:09
 
 # AI Context
 - Summary: Chronological Today capture redesign
@@ -59,6 +59,7 @@
 - Owner follow-up: one reusable `TimeSelect` (hour, then 00/15/30/45) replaces every capture time input and the now shortcut. Sport and nap duration is one select from 15 min to 2 h (nap default 15 min); drink volume is a segmented choice of 250 ml, 500 ml, 750 ml or 1 L. The API still receives Paris wall time and millilitres; backend bounds already accept these values.
 - Remaining: browser review/screenshots outside the restricted environment, local commit on main, traceability proof and closeout. No push.
 - Full handoff and file list: `docs/capture-redesign.md`.
+- 2026-11-09: sandbox blockers gone (commits and pytest run on the host). Hosted at https://sommeil.paulmondou.fr with registration switch, closed by default and temporarily open on the VPS for the owner's account. Remaining: owner check on the live site, smoke screenshots.
 
 # Links
 - Request: `req_001_simplify_chronological_today_capture`
@@ -68,3 +69,6 @@
 # Executions
 | When | Runner | Run id | Title | State | PR | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+
+# Notes
+- 2026-11-09: owner approved the one-column redesign; times by hour + quarter-hour selects (no Maintenant), sport and nap durations 15 min to 2 h, drinks 250/500/750 ml and 1 L.
