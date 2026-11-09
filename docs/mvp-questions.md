@@ -103,10 +103,10 @@ periods, cat and early waking. Gluten remains editable under advanced options.
 All four dinner portions and both independent stress periods are retained.
 
 Quick capture uses modal bottom sheets with fresh defaults: drinks 250 ml, sport
-30 minutes, naps 20 minutes. Favorites management is a separate screen reached
+30 minutes, naps 15 minutes. Favorites management is a separate screen reached
 from advanced options. Favorite selection copies its drink type; the volume starts
 at 250 ml and can be adjusted, while existing favorite definitions remain intact.
-Times use an hour then quarter-hour picker, without a now shortcut. Sport lasts
+Times use an hour then quarter-hour picker, without a now shortcut. Sport and naps last
 15 min to 2 h by quarter hour; drinks are 250 ml, 500 ml, 750 ml or 1 L.
 Existing entries autosave valid edits; creating an entry uses the Add action.
 Early-wake reason saves on change. DST choices and event night

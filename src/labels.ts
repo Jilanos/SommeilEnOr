@@ -49,7 +49,8 @@ export const kindLabel = (value: EventKind) =>
   ({ drink: t("kind.drink"), activity: t("kind.activity"), nap: t("kind.nap") })[value];
 
 export const VOLUMES_ML = [250, 500, 750, 1000];
-export const SPORT_DURATIONS = [15, 30, 45, 60, 75, 90, 105, 120];
+/** Sport and nap durations, by quarter hour. */
+export const DURATIONS = [15, 30, 45, 60, 75, 90, 105, 120];
 
 /** "250 ml", "1 L"; the API stores millilitres. */
 export const volumeLabel = (ml: number) =>

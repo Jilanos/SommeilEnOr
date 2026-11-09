@@ -5,7 +5,7 @@ collapsed advanced options. Three buttons open modal bottom sheets for drinks,
 sport and naps. Today's entries are compact chips that open editing and deletion.
 Existing entries save valid changes automatically; a new entry uses Add after
 choosing its details. Every new sheet starts with 250 ml, 30 minutes for sport or
-20 minutes for naps. Favorite management has its own screen, reached from advanced
+15 minutes for naps. Favorite management has its own screen, reached from advanced
 options. Using a favorite retains its provenance and creates an independent entry;
 the capture volume starts at 250 ml without changing the stored favorite.
 
@@ -14,10 +14,9 @@ Times use one two-step picker: an hour (00 to 23), then a quarter hour (00, 15,
 current time rounded down to the quarter hour; other days start at 12:00. Hours
 before 04:00 belong to the next calendar date of the tracking day. Dinner, sugar
 and early-wake times start empty and clear when the hour is reset to `--`. Sport
-duration is a choice from 15 min to 2 h by quarter hour. Drink volume is a choice
+and nap durations are a choice from 15 min to 2 h by quarter hour. Drink volume is a choice
 of 250 ml, 500 ml, 750 ml or 1 L, stored in millilitres. A stored value off these
-grids (an old 330 ml or 08:10) is shown as it is. Nap duration stays a free number
-of minutes.
+grids (an old 330 ml, 08:10 or a 20-minute nap) is shown as it is.
 
 Answers save on change with one shared save indicator. Pressing an answer again
 clears it to unknown. Each answered question has a check; the header counts eight
@@ -91,12 +90,13 @@ The regular suite must also be rerun outside the restricted environment.
 
 | Check | Result |
 | --- | --- |
-| `npm test` | 36 tests passed. |
+| `npm test` | 38 tests passed (naps included). |
 | `npm run build` | Passed (TypeScript and Vite). |
 | `(cd backend && uv run pytest)` | 35 passed without polling, one existing Starlette/httpx deprecation warning. |
 
 No backend change: the API already takes Paris wall time, `volume_ml` up to
-5000 and `duration_minutes` up to 1440. `scripts/smoke.mjs` follows the new
+5000 and `duration_minutes` up to 1440. The free duration field and its error message
+are gone: sport and naps share one select. `scripts/smoke.mjs` follows the new
 volume and time controls; it was not run.
 
 ## Remaining local verification

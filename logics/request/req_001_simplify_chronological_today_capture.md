@@ -24,7 +24,7 @@
 - Existing frontend uses persistent capture cards, field hints and multiple save indicators.
 - Sugar and early-wake server validators currently require a time; permit missing time to support immediate yes saves without inventing timestamps.
 - Dinner retains all four existing portions; gluten remains available under advanced options.
-- Favorites management is separate from capture. Each drink starts at 250 ml, sport at 30 minutes, nap at 20 minutes.
+- Favorites management is separate from capture. Each drink starts at 250 ml, sport at 30 minutes, nap at 15 minutes.
 
 # Priority
 - Priority: High
@@ -37,10 +37,10 @@
 # Acceptance criteria
 - AC1: Today is one column at all widths, ordered quick capture, Soir, Nuit, collapsed advanced options, with short section help and no unknown chips.
 - AC2: Every question saves on change; selected choices clear to unknown; one global save indicator reports pending, saved, failed or offline. Sugar yes saves without time.
-- AC3: Quick capture and inline entry editing use accessible sheets with fresh defaults (250 ml, activity 30 minutes, nap 20 minutes); favorites management is separate, and event edit/delete and temporal overrides remain available under advanced options.
+- AC3: Quick capture and inline entry editing use accessible sheets with fresh defaults (250 ml, activity 30 minutes, nap 15 minutes); favorites management is separate, and event edit/delete and temporal overrides remain available under advanced options.
 - AC4: Header counts answered core questions and answered rows show checks; preserve four dinner portions, gluten, independent stress and absent/unknown semantics.
 - AC5: Frontend tests, backend tests, build and available offline-local Playwright smoke pass; save synthetic mobile 390x844 and desktop screenshots, commit on main without pushing.
-- AC6: Times in the capture use a two-step hour and quarter-hour picker with no now shortcut; sport durations run from 15 min to 2 h by quarter hour; drink volumes are 250 ml, 500 ml, 750 ml or 1 L. Stored off-grid values display as they are.
+- AC6: Times in the capture use a two-step hour and quarter-hour picker with no now shortcut; sport and nap durations run from 15 min to 2 h by quarter hour; drink volumes are 250 ml, 500 ml, 750 ml or 1 L. Stored off-grid values display as they are.
 
 # Definition of Ready (DoR)
 - [x] Problem statement and user impact are clear.

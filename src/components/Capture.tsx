@@ -13,7 +13,7 @@ import {
 } from "../api";
 import { t } from "../i18n";
 import {
-  SPORT_DURATIONS,
+  DURATIONS,
   VOLUMES_ML,
   activityLabel,
   drinkLabel,
@@ -136,7 +136,7 @@ export function CaptureSheet({
     event?.intensity ?? "medium",
   );
   const [duration, setDuration] = useState(
-    String(event?.duration_minutes ?? (kind === "nap" ? 20 : 30)),
+    String(event?.duration_minutes ?? (kind === "nap" ? 15 : 30)),
   );
   const created = useRef<JournalEvent | null>(null);
   const [favoriteId, setFavoriteId] = useState<string | null>(null);
@@ -286,7 +286,7 @@ export function CaptureSheet({
             />
           </>
         )}
-        {kind === "activity" && (
+        {kind !== "drink" && (
           <label className="row">
             {t("capture.duration")}
             <select
@@ -298,39 +298,13 @@ export function CaptureSheet({
                 void update({ duration_minutes: Number(e.target.value) });
               }}
             >
-              {withCurrent(SPORT_DURATIONS, Number(duration)).map((value) => (
+              {withCurrent(DURATIONS, Number(duration)).map((value) => (
                 <option key={value} value={value}>
                   {durationLabel(Number(value))}
                 </option>
               ))}
             </select>
           </label>
-        )}
-        {kind === "nap" && (
-          <label className="row">
-            {t("capture.duration")}
-            <input
-              type="number"
-              aria-label={t("capture.duration")}
-              className="narrow"
-              min={1}
-              max={1440}
-              required
-              value={duration}
-              onChange={(e) => {
-                const value = e.target.value;
-                setDuration(value);
-                if (+value > 0 && +value <= 1440 && Number.isInteger(+value))
-                  void update({ duration_minutes: +value });
-              }}
-            />
-            min
-          </label>
-        )}
-        {!valid && (
-          <p className="error" role="alert">
-            {t("capture.duration_invalid")}
-          </p>
         )}
         <TimeChooser
           value={time}

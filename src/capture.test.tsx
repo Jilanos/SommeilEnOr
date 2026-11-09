@@ -339,7 +339,7 @@ describe("capture sheets", () => {
   });
   it.each([
     ["Sport", 30, "activity"],
-    ["Sieste", 20, "nap"],
+    ["Sieste", 15, "nap"],
   ] as const)(
     "starts %s with a fresh default duration",
     async (label, duration, kind) => {
@@ -476,27 +476,50 @@ describe("capture sheets", () => {
       occurred_at: { at: "2026-11-10T02:15" },
     });
   });
-  it("offers sport durations by quarter hour from 15 min to 2 h", async () => {
+  it.each(["Sport", "Sieste"])(
+    "offers %s durations by quarter hour from 15 min to 2 h",
+    async (label) => {
+      await start();
+      await open(label);
+      const select = screen.getByLabelText(
+        t("capture.duration"),
+      ) as HTMLSelectElement;
+      expect([...select.options].map((option) => option.textContent)).toEqual([
+        "15 min",
+        "30 min",
+        "45 min",
+        "1 h",
+        "1 h 15",
+        "1 h 30",
+        "1 h 45",
+        "2 h",
+      ]);
+      fireEvent.change(select, { target: { value: "90" } });
+      fireEvent.click(screen.getByRole("button", { name: t("common.add") }));
+      await waitFor(() =>
+        expect(posts[0]).toMatchObject({
+          kind: label === "Sport" ? "activity" : "nap",
+          duration_minutes: 90,
+        }),
+      );
+    },
+  );
+  it("shows a stored off-grid nap duration as it is", async () => {
+    view.events = [
+      entry({
+        kind: "nap",
+        drink_type: null,
+        volume_ml: null,
+        duration_minutes: 20,
+      }),
+    ];
     await start();
-    await open("Sport");
+    fireEvent.click(screen.getByRole("button", { name: /Modifier Sieste/ }));
     const select = screen.getByLabelText(
       t("capture.duration"),
     ) as HTMLSelectElement;
-    expect([...select.options].map((option) => option.textContent)).toEqual([
-      "15 min",
-      "30 min",
-      "45 min",
-      "1 h",
-      "1 h 15",
-      "1 h 30",
-      "1 h 45",
-      "2 h",
-    ]);
-    fireEvent.change(select, { target: { value: "90" } });
-    fireEvent.click(screen.getByRole("button", { name: t("common.add") }));
-    await waitFor(() =>
-      expect(posts[0]).toMatchObject({ kind: "activity", duration_minutes: 90 }),
-    );
+    expect(select.value).toBe("20");
+    expect(select.options[1].textContent).toBe("20 min");
   });
   it("shows stored off-grid values as they are", async () => {
     view.events = [
