@@ -47,3 +47,18 @@ export const intensityLabel = (value: Intensity) =>
 
 export const kindLabel = (value: EventKind) =>
   ({ drink: t("kind.drink"), activity: t("kind.activity"), nap: t("kind.nap") })[value];
+
+export const VOLUMES_ML = [250, 500, 750, 1000];
+export const SPORT_DURATIONS = [15, 30, 45, 60, 75, 90, 105, 120];
+
+/** "250 ml", "1 L"; the API stores millilitres. */
+export const volumeLabel = (ml: number) =>
+  ml % 1000 === 0 ? `${ml / 1000} L` : `${ml} ml`;
+
+/** "45 min", "1 h", "1 h 15". */
+export function durationLabel(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (!hours) return `${minutes} min`;
+  return rest ? `${hours} h ${String(rest).padStart(2, "0")}` : `${hours} h`;
+}

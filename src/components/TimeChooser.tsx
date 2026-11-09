@@ -1,31 +1,31 @@
 import type { MomentInput } from "../api";
 import { t } from "../i18n";
-import { offsetLabel, parisLocalInput, parisOffsetsFor } from "../time";
+import {
+  offsetLabel,
+  parisOffsetsFor,
+  timeOf,
+  wallTimeOnTrackingDay,
+} from "../time";
+import { TimeSelect } from "./TimeSelect";
 
+/** Paris wall time "YYYY-MM-DDTHH:MM" (empty when unset), with an optional DST offset. */
 export interface TimeValue {
-  mode: "now" | "custom";
   local: string;
   offset?: number;
 }
 
-export function nowValue(): TimeValue {
-  return { mode: "now", local: parisLocalInput() };
-}
-
 export function customValue(local: string): TimeValue {
-  return { mode: "custom", local };
+  return { local };
 }
 
-/** MomentInput for the API: an actual instant for "now", Paris wall time otherwise. */
+/** MomentInput for the API: Paris wall time, with the offset when it was chosen. */
 export function toMomentInput(value: TimeValue): MomentInput {
-  if (value.mode === "now") return { at: new Date().toISOString() };
   return value.offset === undefined
     ? { at: value.local }
     : { at: value.local, utc_offset_minutes: value.offset };
 }
 
 export function timeProblem(value: TimeValue): string | null {
-  if (value.mode === "now") return null;
   if (!value.local) return t("time.required");
   const offsets = parisOffsetsFor(value.local);
   if (offsets.length === 0) return t("time.nonexistent");
@@ -37,49 +37,33 @@ export function timeProblem(value: TimeValue): string | null {
 interface Props {
   value: TimeValue;
   onChange: (value: TimeValue) => void;
+  /** Tracking day of the time: hours before 04:00 fall on the next calendar date. */
+  date: string;
   label?: string;
-  allowNow?: boolean;
+  disabled?: boolean;
 }
 
+/** Hour and quarter-hour of a tracking day, plus the hidden DST offset choice. */
 export function TimeChooser({
   value,
   onChange,
+  date,
   label = t("time.label"),
-  allowNow = true,
+  disabled,
 }: Props) {
-  const offsets =
-    value.mode === "custom" && value.local ? parisOffsetsFor(value.local) : [];
+  const offsets = value.local ? parisOffsetsFor(value.local) : [];
+  const problem = value.local ? timeProblem(value) : null;
   return (
     <div className="time-chooser">
       <span className="field-label">{label}</span>
-      {allowNow && (
-        <div className="choice">
-          <button
-            type="button"
-            className={value.mode === "now" ? "chip chip-on" : "chip"}
-            aria-pressed={value.mode === "now"}
-            onClick={() => onChange(nowValue())}
-          >
-            {t("time.now")}
-          </button>
-          <button
-            type="button"
-            className={value.mode === "custom" ? "chip chip-on" : "chip"}
-            aria-pressed={value.mode === "custom"}
-            onClick={() => onChange(customValue(parisLocalInput()))}
-          >
-            {t("time.other")}
-          </button>
-        </div>
-      )}
-      {value.mode === "custom" && (
-        <input
-          type="datetime-local"
-          aria-label={label}
-          value={value.local}
-          onChange={(event) => onChange(customValue(event.target.value))}
-        />
-      )}
+      <TimeSelect
+        label={label}
+        value={value.local ? timeOf(value.local) : ""}
+        disabled={disabled}
+        onChange={(hhmm) =>
+          onChange(customValue(hhmm ? wallTimeOnTrackingDay(date, hhmm) : ""))
+        }
+      />
       {offsets.length > 1 && (
         <details className="advanced">
           <summary>{t("today.advanced")}</summary>
@@ -107,9 +91,7 @@ export function TimeChooser({
           </select>
         </details>
       )}
-      {timeProblem(value) && value.mode === "custom" && value.local && (
-        <span className="error">{timeProblem(value)}</span>
-      )}
+      {problem && <span className="error">{problem}</span>}
     </div>
   );
 }

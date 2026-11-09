@@ -9,6 +9,16 @@ choosing its details. Every new sheet starts with 250 ml, 30 minutes for sport o
 options. Using a favorite retains its provenance and creates an independent entry;
 the capture volume starts at 250 ml without changing the stored favorite.
 
+Times use one two-step picker: an hour (00 to 23), then a quarter hour (00, 15,
+30, 45). There is no "now" shortcut. A new entry on the current day starts at the
+current time rounded down to the quarter hour; other days start at 12:00. Hours
+before 04:00 belong to the next calendar date of the tracking day. Dinner, sugar
+and early-wake times start empty and clear when the hour is reset to `--`. Sport
+duration is a choice from 15 min to 2 h by quarter hour. Drink volume is a choice
+of 250 ml, 500 ml, 750 ml or 1 L, stored in millilitres. A stored value off these
+grids (an old 330 ml or 08:10) is shown as it is. Nap duration stays a free number
+of minutes.
+
 Answers save on change with one shared save indicator. Pressing an answer again
 clears it to unknown. Each answered question has a check; the header counts eight
 core questions. Dinner counts once when either its time or portion is present.
@@ -37,8 +47,10 @@ retries its adjustment without creating a duplicate.
 - `src/screens/TodayScreen.tsx`, `DayPage.tsx`, `HistoryScreen.tsx`: chronological
   context, progress, inline entries and shared historical correction/capture.
 - `src/screens/FavoritesScreen.tsx`: separate favorites management.
-- `src/components/Capture.tsx`, `Sheet.tsx`, `SectionHelp.tsx`, `TimeChooser.tsx`:
-  event sheets, modal focus, section help and advanced DST/night controls.
+- `src/components/Capture.tsx`, `Sheet.tsx`, `SectionHelp.tsx`, `TimeChooser.tsx`,
+  `TimeSelect.tsx`: event sheets, modal focus, section help, quarter-hour time
+  picker and advanced DST/night controls.
+- `src/labels.ts`: fixed volume and sport duration choices and their labels.
 - Removed `DayEditor.tsx`, `NightEditor.tsx`, `EventList.tsx`, `Field.tsx` and
   their unused catalog strings/styles.
 - `src/App.tsx`, `src/styles.css`, `src/i18n/fr.json`, `src/time.ts`,
@@ -74,6 +86,18 @@ this sandbox. The command was
 `UV_CACHE_DIR=/tmp/sleep-uv PYTHONPATH=/tmp uv run --offline pytest -p sleep_pytest_poll -q`
 from `backend/`. This environment-only adjustment is not part of the application.
 The regular suite must also be rerun outside the restricted environment.
+
+## Owner follow-up on 2026-11-09: quarter-hour pickers
+
+| Check | Result |
+| --- | --- |
+| `npm test` | 36 tests passed. |
+| `npm run build` | Passed (TypeScript and Vite). |
+| `(cd backend && uv run pytest)` | 35 passed without polling, one existing Starlette/httpx deprecation warning. |
+
+No backend change: the API already takes Paris wall time, `volume_ml` up to
+5000 and `duration_minutes` up to 1440. `scripts/smoke.mjs` follows the new
+volume and time controls; it was not run.
 
 ## Remaining local verification
 

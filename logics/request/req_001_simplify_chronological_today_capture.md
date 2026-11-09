@@ -40,6 +40,7 @@
 - AC3: Quick capture and inline entry editing use accessible sheets with fresh defaults (250 ml, activity 30 minutes, nap 20 minutes); favorites management is separate, and event edit/delete and temporal overrides remain available under advanced options.
 - AC4: Header counts answered core questions and answered rows show checks; preserve four dinner portions, gluten, independent stress and absent/unknown semantics.
 - AC5: Frontend tests, backend tests, build and available offline-local Playwright smoke pass; save synthetic mobile 390x844 and desktop screenshots, commit on main without pushing.
+- AC6: Times in the capture use a two-step hour and quarter-hour picker with no now shortcut; sport durations run from 15 min to 2 h by quarter hour; drink volumes are 250 ml, 500 ml, 750 ml or 1 L. Stored off-grid values display as they are.
 
 # Definition of Ready (DoR)
 - [x] Problem statement and user impact are clear.

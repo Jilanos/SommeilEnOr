@@ -13,12 +13,22 @@ import {
 } from "../api";
 import { t } from "../i18n";
 import {
+  SPORT_DURATIONS,
+  VOLUMES_ML,
   activityLabel,
   drinkLabel,
+  durationLabel,
   intensityLabel,
   kindLabel,
+  volumeLabel,
 } from "../labels";
-import { addDays, currentTrackingDate, inputOf, timeOf } from "../time";
+import {
+  addDays,
+  currentTrackingDate,
+  inputOf,
+  quarterLocalInput,
+  timeOf,
+} from "../time";
 import type { Saver } from "../useSaver";
 import { Choice } from "./Choice";
 import { SaveStatus } from "./SaveStatus";
@@ -26,7 +36,6 @@ import { Sheet } from "./Sheet";
 import {
   TimeChooser,
   customValue,
-  nowValue,
   timeProblem,
   toMomentInput,
   type TimeValue,
@@ -34,10 +43,19 @@ import {
 
 export function describe(event: JournalEvent): string {
   if (event.kind === "drink")
-    return `${drinkLabel(event.drink_type!)} · ${event.volume_ml} ml`;
+    return `${drinkLabel(event.drink_type!)} · ${volumeLabel(event.volume_ml!)}`;
   if (event.kind === "activity")
-    return `${activityLabel(event.activity_type!)} · ${event.duration_minutes} min`;
-  return `${kindLabel("nap")} · ${event.duration_minutes} min`;
+    return `${activityLabel(event.activity_type!)} · ${durationLabel(event.duration_minutes!)}`;
+  return `${kindLabel("nap")} · ${durationLabel(event.duration_minutes!)}`;
+}
+
+/** Fixed choices, plus the stored value when it lies off the grid. */
+function withCurrent(options: number[], current: number): string[] {
+  return (
+    options.includes(current) || !(current > 0)
+      ? options
+      : [...options, current].sort((a, b) => a - b)
+  ).map(String);
 }
 
 export function EventChips({
@@ -101,9 +119,11 @@ export function CaptureSheet({
           ...customValue(inputOf(event.occurred_at.local)),
           offset: event.occurred_at.utc_offset_minutes,
         }
-      : date === currentTrackingDate()
-        ? nowValue()
-        : customValue(`${date}T12:00`),
+      : customValue(
+          date === currentTrackingDate()
+            ? quarterLocalInput()
+            : `${date}T12:00`,
+        ),
   );
   const [drink, setDrink] = useState<DrinkType>(
     event?.drink_type ?? "green_tea",
@@ -227,26 +247,17 @@ export function CaptureSheet({
                 void update({ drink_type: value });
               }}
             />
-            <label className="row">
-              {t("capture.volume")}
-              <input
-                type="number"
-                aria-label={t("capture.volume")}
-                className="narrow"
-                required
-                min={1}
-                max={5000}
-                step="any"
-                value={volume}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setVolume(value);
-                  if (+value > 0 && +value <= 5000)
-                    void update({ volume_ml: +value });
-                }}
-              />
-              ml
-            </label>
+            <Choice
+              label={t("capture.volume")}
+              value={volume}
+              options={withCurrent(VOLUMES_ML, Number(volume))}
+              optionLabel={(value) => volumeLabel(Number(value))}
+              disabled={pending}
+              onChange={(value) => {
+                setVolume(value);
+                void update({ volume_ml: Number(value) });
+              }}
+            />
           </>
         )}
         {kind === "activity" && (
@@ -275,7 +286,27 @@ export function CaptureSheet({
             />
           </>
         )}
-        {kind !== "drink" && (
+        {kind === "activity" && (
+          <label className="row">
+            {t("capture.duration")}
+            <select
+              aria-label={t("capture.duration")}
+              value={duration}
+              disabled={pending}
+              onChange={(e) => {
+                setDuration(e.target.value);
+                void update({ duration_minutes: Number(e.target.value) });
+              }}
+            >
+              {withCurrent(SPORT_DURATIONS, Number(duration)).map((value) => (
+                <option key={value} value={value}>
+                  {durationLabel(Number(value))}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        {kind === "nap" && (
           <label className="row">
             {t("capture.duration")}
             <input
@@ -298,12 +329,14 @@ export function CaptureSheet({
         )}
         {!valid && (
           <p className="error" role="alert">
-            {kind === "drink"
-              ? t("capture.volume_invalid")
-              : t("capture.duration_invalid")}
+            {t("capture.duration_invalid")}
           </p>
         )}
-        <TimeChooser value={time} onChange={changeTime} allowNow={!event} />
+        <TimeChooser
+          value={time}
+          onChange={changeTime}
+          date={event?.tracking_date ?? date}
+        />
         {event && (
           <details className="advanced">
             <summary>{t("today.advanced")}</summary>

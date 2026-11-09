@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { wallTimeOnTrackingDay } from "./time";
 import { timeProblem, toMomentInput } from "./components/TimeChooser";
-import { addDays, parisLocalInput, parisOffsetsFor, trackingDateOf } from "./time";
+import { addDays, parisLocalInput, parisOffsetsFor, quarterLocalInput, trackingDateOf } from "./time";
 
 describe("tracking day (strict 04:00 Europe/Paris)", () => {
   it.each([
@@ -39,16 +39,22 @@ describe("Paris wall time and DST", () => {
   });
 
   it("requires an offset choice only for a repeated hour", () => {
-    expect(timeProblem({ mode: "custom", local: "2026-10-25T02:30" })).not.toBeNull();
-    expect(timeProblem({ mode: "custom", local: "2026-10-25T02:30", offset: 60 })).toBeNull();
-    expect(timeProblem({ mode: "custom", local: "2026-03-29T02:30", offset: 60 })).not.toBeNull();
-    expect(toMomentInput({ mode: "custom", local: "2026-10-25T02:30", offset: 60 })).toEqual({
+    expect(timeProblem({ local: "2026-10-25T02:30" })).not.toBeNull();
+    expect(timeProblem({ local: "2026-10-25T02:30", offset: 60 })).toBeNull();
+    expect(timeProblem({ local: "2026-03-29T02:30", offset: 60 })).not.toBeNull();
+    expect(toMomentInput({ local: "2026-10-25T02:30", offset: 60 })).toEqual({
       at: "2026-10-25T02:30",
       utc_offset_minutes: 60,
     });
   });
 
-  it("sends the actual instant for 'now'", () => {
-    expect(toMomentInput({ mode: "now", local: "" }).at).toMatch(/Z$/);
+  it("requires a time and sends Paris wall time without inventing an instant", () => {
+    expect(timeProblem({ local: "" })).not.toBeNull();
+    expect(toMomentInput({ local: "2026-11-09T08:15" })).toEqual({ at: "2026-11-09T08:15" });
+  });
+
+  it("rounds the current Paris time down to the quarter hour", () => {
+    expect(quarterLocalInput(new Date("2026-11-09T07:44:59Z"))).toBe("2026-11-09T08:30");
+    expect(quarterLocalInput(new Date("2026-11-09T07:00:00Z"))).toBe("2026-11-09T08:00");
   });
 });

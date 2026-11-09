@@ -148,3 +148,5 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
   .question-wide .question-controls { width: 100%; }
   .content-today { padding: 1rem 0.75rem; }
 }
+.time-select { display: inline-flex; align-items: center; gap: 0.25rem; }
+.time-select select { min-height: 44px; padding: 0.4rem 0.5rem; }

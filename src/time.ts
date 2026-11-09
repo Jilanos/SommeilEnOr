@@ -97,3 +97,10 @@ export function formatCaptureDate(date: string): string {
     timeZone: "Europe/Paris",
   }).format(new Date(`${date}T12:00:00Z`));
 }
+
+/** Paris wall time now, rounded down to the quarter hour ("YYYY-MM-DDTHH:MM"). */
+export function quarterLocalInput(instant: Date = new Date()): string {
+  const local = parisLocalInput(instant);
+  const minute = Math.floor(Number(local.slice(14, 16)) / 15) * 15;
+  return `${local.slice(0, 14)}${String(minute).padStart(2, "0")}`;
+}

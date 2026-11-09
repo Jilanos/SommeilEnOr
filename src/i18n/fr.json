@@ -32,8 +32,7 @@
     "duration": "Durée",
     "duration_invalid": "La durée doit être un nombre entier de minutes supérieur à zéro.",
     "intensity": "Intensité",
-    "volume": "Volume",
-    "volume_invalid": "Le volume doit être supérieur à zéro."
+    "volume": "Volume"
   },
   "common": {
     "cancel": "Annuler",
@@ -156,15 +155,15 @@
   },
   "time": {
     "ambiguous": "Cette heure existe deux fois (passage à l'heure d'hiver) : choisissez le décalage.",
+    "hour": "{label} : heure",
     "label": "Heure de la saisie",
+    "minutes": "{label} : minutes",
     "nonexistent": "Cette heure n'existe pas (passage à l'heure d'été).",
-    "now": "Maintenant",
     "offset": "Décalage horaire",
     "offset_choose": "Choisir…",
     "offset_summer": "(heure d'été)",
     "offset_winter": "(heure d'hiver)",
-    "other": "Autre heure",
-    "required": "Indiquez une date et une heure."
+    "required": "Indiquez une heure."
   },
   "today": {
     "help": "Aide : {section}",

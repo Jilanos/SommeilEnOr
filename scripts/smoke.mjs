@@ -77,7 +77,9 @@ try {
   sheet = await openDrink(page);
   check(
     "new drink resets to 250 ml",
-    (await sheet.getByLabel("Volume", { exact: true }).inputValue()) === "250",
+    (await sheet
+      .getByRole("button", { name: "250 ml", exact: true })
+      .getAttribute("aria-pressed")) === "true",
   );
   await page.keyboard.press("Escape");
   await sheet.waitFor({ state: "detached" });
@@ -92,7 +94,7 @@ try {
   check(
     "sugar yes persists with optional time",
     (await page
-      .getByLabel("Heure de la prise", { exact: true })
+      .getByLabel("Heure de la prise : heure", { exact: true })
       .inputValue()) === "",
   );
   await choose(page, "Sucre tardif", "Oui");

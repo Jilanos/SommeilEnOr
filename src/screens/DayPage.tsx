@@ -17,6 +17,7 @@ import {
   toMomentInput,
   type TimeValue,
 } from "../components/TimeChooser";
+import { TimeSelect } from "../components/TimeSelect";
 import { t } from "../i18n";
 import {
   DINNER_QUANTITIES,
@@ -264,18 +265,17 @@ export function DayPage({
           />
         </div>
         <Question label={t("day.dinner")} answered={dinnerAnswered} wide>
-          <input
-            type="time"
-            aria-label={t("day.dinner_time")}
+          <TimeSelect
+            label={t("day.dinner_time")}
             disabled={pending}
             value={
               ambiguousTime?.field === "dinner_at"
-                ? ambiguousTime.value.local.slice(11, 16)
+                ? timeOf(ambiguousTime.value.local)
                 : day.dinner_at
                   ? timeOf(day.dinner_at.local)
                   : ""
             }
-            onChange={(e) => changeMoment("dinner_at", e.target.value)}
+            onChange={(hhmm) => changeMoment("dinner_at", hhmm)}
           />
           <Answer
             label={t("day.dinner_quantity")}
@@ -303,22 +303,21 @@ export function DayPage({
             (value) => void patchDay({ late_sugar: value }),
           )}
           {day.late_sugar === "yes" && (
-            <label className="optional-time">
-              {t("today.optional_time")}
-              <input
-                type="time"
-                aria-label={t("day.late_sugar_time")}
+            <div className="optional-time">
+              <span aria-hidden="true">{t("today.optional_time")}</span>
+              <TimeSelect
+                label={t("day.late_sugar_time")}
                 disabled={pending}
                 value={
                   ambiguousTime?.field === "late_sugar_at"
-                    ? ambiguousTime.value.local.slice(11, 16)
+                    ? timeOf(ambiguousTime.value.local)
                     : day.late_sugar_at
                       ? timeOf(day.late_sugar_at.local)
                       : ""
                 }
-                onChange={(e) => changeMoment("late_sugar_at", e.target.value)}
+                onChange={(hhmm) => changeMoment("late_sugar_at", hhmm)}
               />
-            </label>
+            </div>
           )}
         </Question>
         <Question
@@ -387,19 +386,17 @@ export function DayPage({
             (value) => void patchNight({ early_wake_planned: value }),
           )}
           {night.early_wake_planned === "yes" && (
-            <label className="optional-time">
-              {t("night.early_wake_target")}
-              <input
-                type="time"
-                value={night.early_wake_target_time ?? ""}
+            <div className="optional-time">
+              <span aria-hidden="true">{t("night.early_wake_target")}</span>
+              <TimeSelect
+                label={t("night.early_wake_target")}
                 disabled={pending}
-                onChange={(e) =>
-                  void patchNight({
-                    early_wake_target_time: e.target.value || null,
-                  })
+                value={night.early_wake_target_time ?? ""}
+                onChange={(hhmm) =>
+                  void patchNight({ early_wake_target_time: hhmm || null })
                 }
               />
-            </label>
+            </div>
           )}
         </Question>
       </section>
@@ -435,7 +432,7 @@ export function DayPage({
         )}
         {ambiguousTime && (
           <TimeChooser
-            allowNow={false}
+            date={date}
             value={ambiguousTime.value}
             onChange={(value) => {
               setAmbiguousTime({ ...ambiguousTime, value });

@@ -84,6 +84,25 @@ const choose = async (group: string, option: string) => {
   );
   await waitFor(() => expect(screen.queryByText(t("save.pending"))).toBeNull());
 };
+const idle = () =>
+  waitFor(() => expect(screen.queryByText(t("save.pending"))).toBeNull());
+/** Two-step time picker: hour first, then the quarter hour. */
+async function pickTime(label: string, hhmm: string) {
+  const [hour, minute] = hhmm.split(":");
+  fireEvent.change(screen.getByLabelText(t("time.hour", { label })), {
+    target: { value: hour },
+  });
+  await idle();
+  fireEvent.change(screen.getByLabelText(t("time.minutes", { label })), {
+    target: { value: minute },
+  });
+  await idle();
+}
+const pressed = (group: string) =>
+  within(screen.getByRole("group", { name: group }))
+    .getAllByRole("button")
+    .filter((button) => button.getAttribute("aria-pressed") === "true")
+    .map((button) => button.textContent);
 async function open(kind = "Boisson") {
   fireEvent.click(screen.getByRole("button", { name: `＋ ${kind}` }));
   return screen.getByRole("dialog");
@@ -239,17 +258,20 @@ describe("chronological context and autosave", () => {
     expect(patchNight).toHaveBeenLastCalledWith(date, {
       early_wake_planned: "yes",
     });
-    fireEvent.change(screen.getByLabelText(t("night.early_wake_target")), {
-      target: { value: "06:30" },
+    await pickTime(t("night.early_wake_target"), "06:30");
+    expect(patchNight).toHaveBeenLastCalledWith(date, {
+      early_wake_target_time: "06:30",
     });
-    await waitFor(() =>
-      expect(patchNight).toHaveBeenLastCalledWith(date, {
-        early_wake_target_time: "06:30",
-      }),
+    fireEvent.change(
+      screen.getByLabelText(
+        t("time.hour", { label: t("night.early_wake_target") }),
+      ),
+      { target: { value: "" } },
     );
-    await waitFor(() =>
-      expect(screen.queryByText(t("save.pending"))).toBeNull(),
-    );
+    await idle();
+    expect(patchNight).toHaveBeenLastCalledWith(date, {
+      early_wake_target_time: null,
+    });
     await choose(t("night.early_wake"), t("answer.yes"));
     expect(patchNight).toHaveBeenLastCalledWith(date, {
       early_wake_planned: "unknown",
@@ -262,9 +284,7 @@ it("keeps an ambiguous meal unsaved until the hidden DST choice is supplied", as
   view.day.tracking_date = "2026-10-24";
   render(<DayPage date="2026-10-24" />);
   await screen.findByRole("heading", { name: t("today.evening") });
-  fireEvent.change(screen.getByLabelText(t("day.dinner_time")), {
-    target: { value: "02:30" },
-  });
+  await pickTime(t("day.dinner_time"), "02:30");
   expect(patchDay).not.toHaveBeenCalled();
   expect(screen.getByRole("alert").textContent).toContain(t("time.ambiguous"));
   const selector = screen.getByLabelText(t("time.offset"));
@@ -304,9 +324,7 @@ describe("capture sheets", () => {
     await start();
     await open();
     await choose(t("favorite.drink"), t("drink.mate"));
-    fireEvent.change(screen.getByLabelText(t("capture.volume")), {
-      target: { value: "500" },
-    });
+    await choose(t("capture.volume"), "500 ml");
     fireEvent.click(screen.getByRole("button", { name: t("common.add") }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     expect(posts[0]).toMatchObject({
@@ -315,9 +333,7 @@ describe("capture sheets", () => {
       volume_ml: 500,
     });
     await open();
-    expect(
-      (screen.getByLabelText(t("capture.volume")) as HTMLInputElement).value,
-    ).toBe("250");
+    expect(pressed(t("capture.volume"))).toEqual(["250 ml"]);
     fireEvent.click(screen.getByRole("button", { name: t("common.add") }));
     await waitFor(() => expect(posts).toHaveLength(2));
   });
@@ -360,9 +376,7 @@ describe("capture sheets", () => {
     await start();
     await open();
     fireEvent.click(screen.getByRole("button", { name: "Grand thé" }));
-    expect(
-      (screen.getByLabelText(t("capture.volume")) as HTMLInputElement).value,
-    ).toBe("250");
+    expect(pressed(t("capture.volume"))).toEqual(["250 ml"]);
     expect(
       screen.queryByRole("button", { name: t("favorite.new") }),
     ).toBeNull();
@@ -405,12 +419,12 @@ describe("capture sheets", () => {
     expect(screen.getAllByRole("radio")[0].closest("details")?.open).toBe(
       false,
     );
-    fireEvent.change(screen.getByLabelText(t("capture.volume")), {
-      target: { value: "300" },
+    await choose(t("capture.volume"), "1 L");
+    expect(eventPatch).toHaveBeenCalledWith("e1", { volume_ml: 1000 });
+    await pickTime(t("time.label"), "09:45");
+    expect(eventPatch).toHaveBeenLastCalledWith("e1", {
+      occurred_at: { at: "2026-11-09T09:45" },
     });
-    await waitFor(() =>
-      expect(eventPatch).toHaveBeenCalledWith("e1", { volume_ml: 300 }),
-    );
     await waitFor(() =>
       expect(screen.queryByText(t("save.pending"))).toBeNull(),
     );
@@ -431,20 +445,80 @@ describe("capture sheets", () => {
     expect(api.deleteEvent).toHaveBeenCalledWith("e1");
     expect(posts).toHaveLength(0);
   });
-  it("refuses invalid volume without posting", async () => {
+  it("offers fixed volumes and quarter-hour times without a now shortcut", async () => {
     await start();
     await open();
-    fireEvent.change(screen.getByLabelText(t("capture.volume")), {
-      target: { value: "0" },
+    expect(
+      within(screen.getByRole("group", { name: t("capture.volume") }))
+        .getAllByRole("button")
+        .map((button) => button.textContent),
+    ).toEqual(["250 ml", "500 ml", "750 ml", "1 L"]);
+    expect(screen.queryByRole("button", { name: "Maintenant" })).toBeNull();
+    const minutes = screen.getByLabelText(
+      t("time.minutes", { label: t("time.label") }),
+    ) as HTMLSelectElement;
+    expect([...minutes.options].map((option) => option.value)).toEqual([
+      "00",
+      "15",
+      "30",
+      "45",
+    ]);
+    const hours = screen.getByLabelText(
+      t("time.hour", { label: t("time.label") }),
+    ) as HTMLSelectElement;
+    expect(hours.options).toHaveLength(25);
+    await pickTime(t("time.label"), "02:15");
+    fireEvent.click(screen.getByRole("button", { name: t("common.add") }));
+    await waitFor(() => expect(posts).toHaveLength(1));
+    // Before 04:00 the time belongs to the next calendar date of the tracking day.
+    expect(posts[0]).toMatchObject({
+      volume_ml: 250,
+      occurred_at: { at: "2026-11-10T02:15" },
     });
+  });
+  it("offers sport durations by quarter hour from 15 min to 2 h", async () => {
+    await start();
+    await open("Sport");
+    const select = screen.getByLabelText(
+      t("capture.duration"),
+    ) as HTMLSelectElement;
+    expect([...select.options].map((option) => option.textContent)).toEqual([
+      "15 min",
+      "30 min",
+      "45 min",
+      "1 h",
+      "1 h 15",
+      "1 h 30",
+      "1 h 45",
+      "2 h",
+    ]);
+    fireEvent.change(select, { target: { value: "90" } });
+    fireEvent.click(screen.getByRole("button", { name: t("common.add") }));
+    await waitFor(() =>
+      expect(posts[0]).toMatchObject({ kind: "activity", duration_minutes: 90 }),
+    );
+  });
+  it("shows stored off-grid values as they are", async () => {
+    view.events = [
+      entry({
+        volume_ml: 330,
+        occurred_at: {
+          utc: "2026-11-09T07:10:00Z",
+          utc_offset_minutes: 60,
+          local: "2026-11-09T08:10:00+01:00",
+        },
+      }),
+    ];
+    await start();
+    fireEvent.click(screen.getByRole("button", { name: /Modifier Maté/ }));
+    expect(pressed(t("capture.volume"))).toEqual(["330 ml"]);
     expect(
       (
-        screen.getByRole("button", {
-          name: t("common.add"),
-        }) as HTMLButtonElement
-      ).disabled,
-    ).toBe(true);
-    expect(posts).toHaveLength(0);
+        screen.getByLabelText(
+          t("time.minutes", { label: t("time.label") }),
+        ) as HTMLSelectElement
+      ).value,
+    ).toBe("10");
   });
 });
 
