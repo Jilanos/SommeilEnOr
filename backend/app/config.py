@@ -11,6 +11,7 @@ class Settings:
     static_dir: Path | None
     secure_cookies: bool
     session_days: int
+    registration_open: bool = True
 
 
 def load_settings() -> Settings:
@@ -20,4 +21,5 @@ def load_settings() -> Settings:
         static_dir=Path(static) if static else None,
         secure_cookies=os.environ.get("SOMMEILENOR_SECURE_COOKIES", "true").lower() != "false",
         session_days=int(os.environ.get("SOMMEILENOR_SESSION_DAYS", "90")),
+        registration_open=os.environ.get("SOMMEILENOR_REGISTRATION", "open").lower() != "closed",
     )

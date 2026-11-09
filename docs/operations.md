@@ -88,7 +88,9 @@ checking cross-account isolation, with synthetic data.
 
 ## Security notes
 
-- Open registration (email + password of at least 10 characters, hashed with scrypt).
+- Email + password registration (at least 10 characters, hashed with scrypt). Open by
+  default; `SOMMEILENOR_REGISTRATION=closed` refuses new accounts with 403
+  `registration_closed` while existing accounts still sign in.
 - Every journal, favorite, suggestion and export query is filtered by the session's
   account; another account's IDs answer 404.
 - No rate limiting is built in; apply it at the reverse proxy for `/api/auth/` if

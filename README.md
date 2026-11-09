@@ -12,7 +12,7 @@ context around each night, then export the records for later analysis.
 - Cat presence, distinct experienced/anticipated stress and planned early waking.
 - Tracking days starting at 04:00 in Europe/Paris, with editable night associations.
 - Unrestricted historical correction and a complete all-history JSON/CSV export.
-- Open email/password registration, isolated account data and private feature suggestions.
+- Email/password registration (closable with `SOMMEILENOR_REGISTRATION=closed`), isolated account data and private feature suggestions.
 
 Garmin integration, correlations, manual sleep metrics, reminders and offline
 writes are outside this MVP. No production deployment is part of this repository.

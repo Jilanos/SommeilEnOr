@@ -105,3 +105,44 @@ def test_cross_account_isolation_with_guessed_ids(alice, bob):
     assert alice.get(f"/api/events/{event['id']}").json()["volume_ml"] == 250
     assert len(alice.get("/api/favorites").json()) == 1
     assert len(alice.get("/api/suggestions").json()) == 1
+
+
+def test_closed_registration_refuses_new_accounts_but_keeps_login(tmp_path):
+    from dataclasses import replace
+
+    from fastapi.testclient import TestClient
+
+    from app.config import Settings
+    from app.main import create_app
+
+    base = Settings(
+        database_path=tmp_path / "closed.sqlite3",
+        static_dir=None,
+        secure_cookies=True,
+        session_days=90,
+    )
+    open_client = TestClient(create_app(base), base_url="https://testserver")
+    created = open_client.post(
+        "/api/auth/register", json={"email": "erin@example.com", "password": PASSWORD}
+    )
+    assert created.status_code == 201
+
+    closed = TestClient(
+        create_app(replace(base, registration_open=False)), base_url="https://testserver"
+    )
+    refused = closed.post(
+        "/api/auth/register", json={"email": "frank@example.com", "password": PASSWORD}
+    )
+    assert refused.status_code == 403
+    assert refused.json()["detail"]["code"] == "registration_closed"
+    login = closed.post("/api/auth/login", json={"email": "erin@example.com", "password": PASSWORD})
+    assert login.status_code == 200
+
+
+def test_registration_setting_reads_environment(monkeypatch):
+    from app.config import load_settings
+
+    monkeypatch.delenv("SOMMEILENOR_REGISTRATION", raising=False)
+    assert load_settings().registration_open is True
+    monkeypatch.setenv("SOMMEILENOR_REGISTRATION", "closed")
+    assert load_settings().registration_open is False

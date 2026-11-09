@@ -86,6 +86,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.post("/api/auth/register", status_code=201)
     def register(payload: schemas.Credentials, response: Response, conn: Conn) -> dict:
+        if not settings.registration_open:
+            raise HTTPException(
+                403,
+                {"code": "registration_closed", "message": "Les inscriptions sont fermées."},
+            )
         user_id = journal.new_id()
         try:
             with transaction(conn):
