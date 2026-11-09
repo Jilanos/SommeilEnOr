@@ -6,9 +6,9 @@ context around each night, then export the records for later analysis.
 ## MVP
 
 - A French progressive web app accessible from phones and desktop browsers.
-- Online-only quick buttons; repeated timed drinks with volume and reusable favorites.
+- Online-only quick capture sheets; repeated timed drinks with volume and reusable favorites.
 - Single-type physical activities with intensity/start/duration; naps with start/duration.
-- Dinner time and portion size, daily alcohol/gluten, timed manual late sugar and evening hot-drink flag.
+- Dinner time and portion size, daily alcohol/gluten, manual late sugar with optional time and evening hot-drink flag.
 - Cat presence, distinct experienced/anticipated stress and planned early waking.
 - Tracking days starting at 04:00 in Europe/Paris, with editable night associations.
 - Unrestricted historical correction and a complete all-history JSON/CSV export.

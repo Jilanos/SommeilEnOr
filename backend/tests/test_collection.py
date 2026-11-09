@@ -169,12 +169,16 @@ def test_day_context_missing_vs_negative_and_late_sugar(alice):
 
     assert alice.patch("/api/days/2026-10-20", json={"dinner_quantity": "huge"}).status_code == 422
     missing = alice.patch("/api/days/2026-10-20", json={"late_sugar": "yes"})
-    assert missing.json()["detail"]["code"] == "late_sugar_time_required"
+    assert missing.status_code == 200
+    assert missing.json()["late_sugar"] == "yes"
+    assert missing.json()["late_sugar_at"] is None
     sugar = alice.patch(
         "/api/days/2026-10-20",
         json={"late_sugar": "yes", "late_sugar_at": {"at": "2026-10-20T22:40"}},
     ).json()
     assert sugar["late_sugar_at"]["local"] == "2026-10-20T22:40:00+02:00"
+    optional = alice.patch("/api/days/2026-10-20", json={"late_sugar_at": None}).json()
+    assert optional["late_sugar"] == "yes" and optional["late_sugar_at"] is None
     no_sugar = alice.patch("/api/days/2026-10-20", json={"late_sugar": "no"}).json()
     assert no_sugar["late_sugar"] == "no" and no_sugar["late_sugar_at"] is None
     assert no_sugar["alcohol"] == "no"  # untouched fields are preserved
@@ -201,7 +205,9 @@ def test_stress_periods_are_independent(alice):
 
 def test_night_context_and_planned_early_wake(alice):
     missing = alice.patch("/api/nights/2026-10-20", json={"early_wake_planned": "yes"})
-    assert missing.json()["detail"]["code"] == "early_wake_target_required"
+    assert missing.status_code == 200
+    assert missing.json()["early_wake_planned"] == "yes"
+    assert missing.json()["early_wake_target_time"] is None
     night = alice.patch(
         "/api/nights/2026-10-20",
         json={
@@ -214,6 +220,13 @@ def test_night_context_and_planned_early_wake(alice):
     assert (night["start_date"], night["end_date"]) == ("2026-10-20", "2026-10-21")
     assert night["early_wake_target_time"] == "05:45" and night["early_wake_reason"] == "Train"
     assert "wake_time" not in night and "bedtime" not in night
+    optional = alice.patch("/api/nights/2026-10-20", json={"early_wake_target_time": None}).json()
+    assert optional["early_wake_planned"] == "yes"
+    assert optional["early_wake_target_time"] is None
+    exported = alice.get("/api/export.json").json()["journal"]
+    exported_night = next(item for item in exported["nights"] if item["start_date"] == "2026-10-20")
+    assert exported_night["early_wake_planned"] == "yes"
+    assert exported_night["early_wake_target_time"] is None
     stable_id = night["id"]
     cancelled = alice.patch("/api/nights/2026-10-20", json={"early_wake_planned": "no"}).json()
     assert cancelled["early_wake_target_time"] is None and cancelled["id"] == stable_id

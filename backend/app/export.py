@@ -83,7 +83,9 @@ DATA_DICTIONARY: list[dict[str, str]] = [
         "table": "tracking_days",
         "field": "late_sugar_at_*",
         "unit": "",
-        "description": "Stated sugar intake time; present only when late_sugar = yes.",
+        "description": (
+            "Optional stated sugar intake time when late_sugar = yes; null when not supplied."
+        ),
     },
     {
         "table": "tracking_days",
@@ -138,7 +140,7 @@ DATA_DICTIONARY: list[dict[str, str]] = [
         "table": "nights",
         "field": "early_wake_target_time",
         "unit": "HH:MM Europe/Paris",
-        "description": "Planned wake target on end_date; present only when planned = yes.",
+        "description": "Optional planned wake target on end_date; null when not supplied.",
     },
     {
         "table": "events",

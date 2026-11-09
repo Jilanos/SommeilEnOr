@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { wallTimeOnTrackingDay } from "./components/DayEditor";
+import { wallTimeOnTrackingDay } from "./time";
 import { timeProblem, toMomentInput } from "./components/TimeChooser";
 import { addDays, parisLocalInput, parisOffsetsFor, trackingDateOf } from "./time";
 

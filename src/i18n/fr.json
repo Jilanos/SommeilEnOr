@@ -28,55 +28,37 @@
     "update_apply": "Mettre à jour"
   },
   "capture": {
-    "activity": "Activité physique",
-    "activity_add": "Ajouter une séance",
-    "activity_hint": "Une seule activité par séance, avec son intensité, l'heure de début et la durée.",
-    "activity_save": "Enregistrer la séance",
     "activity_type": "Type d'activité",
-    "drink": {
-      "add": "Ajouter une boisson",
-      "hint": "Chaque appui crée une prise distincte à l'heure choisie."
-    },
-    "drinks": "Boissons",
     "duration": "Durée",
     "duration_invalid": "La durée doit être un nombre entier de minutes supérieur à zéro.",
     "intensity": "Intensité",
-    "nap": "Sieste",
-    "nap_add": "Ajouter une sieste",
-    "nap_hint": "Heure de début (heure choisie ci-dessus) et durée.",
-    "nap_save": "Enregistrer la sieste",
-    "tracking_day": "Journée de suivi : {date} (la journée commence à 04:00, heure de Paris).",
     "volume": "Volume",
     "volume_invalid": "Le volume doit être supérieur à zéro."
   },
   "common": {
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "edit": "Modifier",
     "loading": "Chargement…",
     "retry": "Réessayer",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "close": "Fermer",
+    "add": "Ajouter"
   },
   "day": {
-    "alcohol": "Alcool aujourd'hui",
+    "alcohol": "Alcool",
     "dinner": "Dîner",
     "dinner_quantity": "Quantité du dîner",
     "dinner_time": "Heure du dîner",
-    "evening_drink": "Boisson chaude sans caféine le soir",
-    "events": "Saisies du {date}",
-    "events_empty": "Aucune saisie pour cette journée.",
-    "experienced_stress": "Stress vécu dans la journée",
+    "evening_drink": "Boisson chaude le soir",
+    "experienced_stress": "Stress aujourd’hui",
     "gluten": "Gluten aujourd'hui",
     "late_sugar": "Sucre tardif",
-    "late_sugar_hint": "Vous décidez vous-même si la prise était tardive ; aucun seuil n'est calculé.",
-    "late_sugar_time": "Heure de la prise",
-    "late_sugar_time_needed": "Indiquez l'heure pour enregistrer « Oui ».",
-    "title": "Journée du {date}"
+    "late_sugar_time": "Heure de la prise"
   },
   "dinner": {
     "big": "Copieux",
     "massive": "Très copieux",
-    "medium": "Moyen",
+    "medium": "Normal",
     "small": "Léger"
   },
   "drink": {
@@ -96,10 +78,7 @@
     "night": "Nuit associée",
     "night_custom": "Autre nuit commençant le",
     "night_default": "Par défaut (règle des 04:00)",
-    "night_label": "Nuit du {date}",
-    "night_manual": "associée manuellement",
-    "night_previous": "Nuit précédente (du {date})",
-    "time": "Heure réelle"
+    "night_previous": "Nuit précédente (du {date})"
   },
   "export": {
     "csv": "Télécharger le lot CSV (.zip)",
@@ -112,8 +91,7 @@
     "delete": "Supprimer le favori {label}",
     "delete_confirm": "Supprimer le favori « {label} » ? Les saisies déjà créées sont conservées.",
     "drink": "Boisson",
-    "empty": "Aucun favori pour l'instant.",
-    "hint": "Un favori crée une nouvelle prise indépendante, à l'heure choisie.",
+    "hint": "Préparez vos boissons habituelles ici. Chaque nouvelle saisie commence à 250 ml, ajustables dans le panneau.",
     "label": "Nom du favori",
     "new": "Nouveau favori",
     "title": "Favoris"
@@ -143,16 +121,11 @@
     "today": "Aujourd'hui"
   },
   "night": {
-    "anticipated_stress": "Stress anticipé pour le {date}",
-    "anticipated_stress_hint": "Distinct du stress réellement vécu ce jour-là, qui ne le remplace jamais.",
-    "cat": "Chat présent dans la chambre",
-    "early_wake": "Réveil matinal prévu",
-    "early_wake_hint": "Contrainte planifiée, pas une mesure du réveil réel.",
+    "cat": "Chat dans la chambre",
+    "early_wake": "Réveil tôt",
     "early_wake_reason": "Motif",
     "early_wake_target": "Heure prévue",
-    "habitual": "Nuit habituelle indicative : 23:30–07:00. Elle ne mesure rien et ne change aucune association.",
-    "reassigned_in": "Saisies d'autres journées associées à cette nuit",
-    "title": "Nuit du {start} au {end}"
+    "reassigned_in": "Saisies d'autres journées associées à cette nuit"
   },
   "save": {
     "disconnected": "Hors ligne : non enregistré.",
@@ -192,5 +165,30 @@
     "offset_winter": "(heure d'hiver)",
     "other": "Autre heure",
     "required": "Indiquez une date et une heure."
+  },
+  "today": {
+    "help": "Aide : {section}",
+    "answered": "Renseigné",
+    "progress": "{count} questions renseignées sur 8",
+    "quick": "Au fil de la journée",
+    "sport": "Sport",
+    "evening": "Soir",
+    "night": "Nuit",
+    "advanced": "Options avancées",
+    "edit_entry": "Modifier {entry}, à {time}",
+    "edit_kind": "Modifier · {kind}",
+    "add_kind": "Ajouter · {kind}",
+    "journal": "Journal",
+    "subtitle": "Quelques gestes pour préparer votre nuit.",
+    "optional_time": "Heure (facultative)",
+    "tomorrow_stress": "Stress pour demain",
+    "manage_favorites": "Gérer mes favoris",
+    "back": "Retour à la saisie",
+    "empty": "Vos boissons, séances et siestes apparaîtront ici.",
+    "quick_help": "Chaque ajout crée une saisie indépendante. Touchez une pastille pour la modifier ou la supprimer. Les heures suivent la règle des 04:00, à Paris.",
+    "evening_help": "Touchez à nouveau une réponse pour l’effacer. Vous décidez si le sucre était tardif ; son heure est facultative. La boisson du soir désigne une boisson sans caféine, sans créer de prise.",
+    "night_help": "Le stress vécu et celui prévu pour demain sont distincts. Le réveil tôt est une contrainte prévue ; son heure est facultative. Aucune mesure de sommeil n’est créée.",
+    "advanced_help": "La journée commence à 04:00, heure de Paris. La nuit associée se modifie dans les options avancées de chaque saisie.",
+    "resolve_time": "Ouvrez les options avancées pour corriger ou préciser l’heure."
   }
 }

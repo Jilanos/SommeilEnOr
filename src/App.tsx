@@ -96,7 +96,7 @@ export function App({ updateReady }: { updateReady: (() => void) | null }) {
           </button>
         ))}
       </nav>
-      <main className="content">
+      <main className={`content${tab === "today" ? " content-today" : ""}`}>
         {tab === "today" && <TodayScreen />}
         {tab === "history" && <HistoryScreen />}
         {tab === "suggestions" && <SuggestionsScreen />}

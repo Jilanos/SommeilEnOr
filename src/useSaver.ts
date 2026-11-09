@@ -2,7 +2,8 @@ import { useCallback, useRef, useState } from "react";
 import { ApiError, DisconnectedError } from "./api";
 import { t } from "./i18n";
 
-export type SaveState = "idle" | "pending" | "saved" | "failed" | "disconnected";
+export type SaveState =
+  "idle" | "pending" | "saved" | "failed" | "disconnected";
 
 export interface Saver {
   state: SaveState;
@@ -23,22 +24,39 @@ export function errorMessage(error: unknown): string {
 export function useSaver(): Saver {
   const [state, setState] = useState<SaveState>("idle");
   const [message, setMessage] = useState("");
-  const counter = useRef(0);
+  const queue = useRef<Promise<unknown>>(Promise.resolve());
+  const pending = useRef(0);
+  const failure = useRef<unknown>(null);
 
-  const run = useCallback(async <T,>(action: () => Promise<T>) => {
-    const id = ++counter.current;
+  const run = useCallback(async <T>(action: () => Promise<T>) => {
+    if (pending.current === 0) failure.current = null;
+    pending.current += 1;
     setState("pending");
     setMessage("");
+    // Reject an offline tap immediately, even while an earlier online write is pending.
+    // This serialization only orders current writes; it never replays offline intent.
+    const offline = navigator.onLine === false;
+    const operation = offline
+      ? Promise.reject<T>(new DisconnectedError("offline"))
+      : queue.current.then(action);
+    if (!offline) queue.current = operation.catch(() => undefined);
     try {
-      const result = await action();
-      if (id === counter.current) setState("saved");
-      return result;
+      return await operation;
     } catch (error) {
-      if (id === counter.current) {
-        setState(error instanceof DisconnectedError ? "disconnected" : "failed");
-        setMessage(errorMessage(error));
-      }
+      failure.current = error;
       return undefined;
+    } finally {
+      pending.current -= 1;
+      if (pending.current === 0) {
+        if (failure.current) {
+          setState(
+            failure.current instanceof DisconnectedError
+              ? "disconnected"
+              : "failed",
+          );
+          setMessage(errorMessage(failure.current));
+        } else setState("saved");
+      }
     }
   }, []);
 

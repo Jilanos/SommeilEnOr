@@ -1,124 +1,250 @@
-// Browser smoke checks against a running instance (synthetic accounts only).
-//   npx playwright install chromium
-//   BASE=http://localhost:8000 OUT=/tmp/shots node scripts/smoke.mjs
-// Covers: registration, quick capture, suggestions, PWA manifest/service worker,
-// offline refusal without replay, export, second browser (mobile), account isolation.
-import { chromium, devices } from "playwright";
+// Local browser smoke. All accounts and entries are synthetic.
+// BASE=http://localhost:8765 OUT=docs/screenshots node scripts/smoke.mjs
+import { chromium } from "playwright";
+import { mkdir } from "node:fs/promises";
 
 const BASE = process.env.BASE ?? "http://localhost:8765";
 const OUT = process.env.OUT;
 const stamp = Date.now();
-const alice = { email: `alice.${stamp}@example.com`, password: "synthetic-password-1" };
-const bob = { email: `bob.${stamp}@example.com`, password: "synthetic-password-2" };
+const alice = {
+  email: `alice.${stamp}@example.com`,
+  password: "synthetic-password-1",
+};
+const bob = {
+  email: `bob.${stamp}@example.com`,
+  password: "synthetic-password-2",
+};
 const results = [];
 const check = (name, ok, detail = "") => {
-  results.push({ name, ok, detail });
-  console.log(`${ok ? "PASS" : "FAIL"} ${name}${detail ? " — " + detail : ""}`);
+  results.push({ name, ok });
+  console.log(`${ok ? "PASS" : "FAIL"} ${name}${detail ? `: ${detail}` : ""}`);
 };
-
 async function auth(page, user, register) {
   await page.goto(BASE);
-  if (register) await page.getByRole("button", { name: "Créer un compte" }).click();
+  if (register)
+    await page
+      .getByRole("button", { name: "Créer un compte", exact: true })
+      .click();
   await page.getByLabel("Adresse e-mail").fill(user.email);
   await page.getByLabel("Mot de passe").fill(user.password);
   await page.locator("form button[type=submit]").click();
-  try {
-    await page.getByRole("navigation", { name: "Navigation principale" }).waitFor({ timeout: 8000 });
-  } catch (error) {
-    console.log("AUTH FAILURE TEXT:", (await page.locator("body").innerText()).slice(0, 500));
-    console.log("VALUES:", await page.getByLabel("Adresse e-mail").inputValue().catch(() => "?"));
-    throw error;
-  }
+  await page.getByRole("heading", { name: "Soir", exact: true }).waitFor();
 }
-
+async function choose(page, group, answer) {
+  await page
+    .getByRole("group", { name: group, exact: true })
+    .getByRole("button", { name: answer, exact: true })
+    .click();
+  await page.getByText("Enregistré", { exact: true }).waitFor();
+}
+async function openDrink(page) {
+  await page.getByRole("button", { name: "＋ Boisson", exact: true }).click();
+  return page.getByRole("dialog");
+}
 const browser = await chromium.launch();
+try {
+  if (OUT) await mkdir(OUT, { recursive: true });
+  const desktop = await browser.newContext({
+    viewport: { width: 1280, height: 900 },
+    colorScheme: "light",
+  });
+  const page = await desktop.newPage();
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await auth(page, alice, true);
+  check("register and chronological capture", true);
+  check(
+    "unknown chips absent and advanced collapsed",
+    (await page
+      .getByRole("button", { name: "Non renseigné", exact: true })
+      .count()) === 0 &&
+      !(await page
+        .locator("details")
+        .first()
+        .evaluate((node) => node.open)),
+  );
 
-// Desktop, account A.
-const desktop = await browser.newContext({ viewport: { width: 1280, height: 900 } });
-const page = await desktop.newPage();
-await auth(page, alice, true);
-check("register and land on capture screen", true);
-const firstDrink = page.locator("section", { hasText: "Ajouter une boisson" }).first();
-await firstDrink.getByRole("button", { name: "Maté", exact: true }).click();
-await firstDrink.getByText("Enregistré").waitFor();
-check("quick drink button saves", true);
-await page.getByText("Maté · 250 ml").first().waitFor();
-check("saved intake listed in the day", true);
-const alcohol = page.locator(".field", { hasText: "Alcool aujourd'hui" });
-await alcohol.getByRole("button", { name: "Oui" }).click();
-await alcohol.getByText("Enregistré").waitFor();
-check("daily alcohol answer saved", true);
-await alcohol.getByRole("button", { name: "Suggérer une amélioration" }).click();
-await page.getByRole("dialog").locator("textarea").fill("Ajouter le vin rouge en option");
-await page.getByRole("button", { name: "Enregistrer la suggestion" }).click();
-await page.getByRole("dialog").waitFor({ state: "detached" });
-await page.getByRole("button", { name: "Suggestions" }).click();
-await page.getByText("Ajouter le vin rouge en option").waitFor();
-check("suggestion stored with context and listed", await page.getByText("day.alcohol").isVisible());
-const suggestionButtons = await page.getByRole("button", { name: "Suggérer une amélioration" }).count();
-await page.getByRole("button", { name: "Aujourd'hui" }).click();
-await page.getByText("Maté · 250 ml").first().waitFor();
-const captureSuggestions = await page.getByRole("button", { name: "Suggérer une amélioration" }).count();
-check("suggestion controls beside actions", captureSuggestions >= 12, `${captureSuggestions} controls on capture screen, ${suggestionButtons} on list`);
-if (OUT) await page.screenshot({ path: `${OUT}/desktop.png`, fullPage: true });
+  let sheet = await openDrink(page);
+  check(
+    "sheet takes focus",
+    await sheet.evaluate((node) => node.contains(document.activeElement)),
+  );
+  await sheet.getByRole("button", { name: "Maté", exact: true }).click();
+  await sheet.getByRole("button", { name: "Ajouter", exact: true }).click();
+  await sheet.waitFor({ state: "detached" });
+  await page.getByRole("button", { name: /Modifier Maté/ }).waitFor();
+  check("independent 250 ml intake listed inline", true);
+  sheet = await openDrink(page);
+  check(
+    "new drink resets to 250 ml",
+    (await sheet.getByLabel("Volume", { exact: true }).inputValue()) === "250",
+  );
+  await page.keyboard.press("Escape");
+  await sheet.waitFor({ state: "detached" });
+  check(
+    "Escape closes sheet and restores focus",
+    await page
+      .getByRole("button", { name: "＋ Boisson", exact: true })
+      .evaluate((node) => document.activeElement === node),
+  );
+  await choose(page, "Alcool", "Non");
+  await choose(page, "Sucre tardif", "Oui");
+  check(
+    "sugar yes persists with optional time",
+    (await page
+      .getByLabel("Heure de la prise", { exact: true })
+      .inputValue()) === "",
+  );
+  await choose(page, "Sucre tardif", "Oui");
+  check(
+    "second tap clears to unknown",
+    (await page.getByLabel("Heure de la prise", { exact: true }).count()) === 0,
+  );
+  await choose(page, "Quantité du dîner", "Normal");
+  await choose(page, "Stress aujourd’hui", "Absent");
+  check(
+    "progress counts answered questions",
+    (await page.locator(".progress").innerText()) === "3/8 ✓",
+  );
+  await page.getByRole("button", { name: "Aide : Soir", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Suggérer une amélioration", exact: true })
+    .click();
+  await page
+    .getByRole("dialog")
+    .locator("textarea")
+    .fill("Exemple synthétique : ajouter un raccourci.");
+  await page
+    .getByRole("button", { name: "Enregistrer la suggestion", exact: true })
+    .click();
+  await page.getByRole("dialog").waitFor({ state: "detached" });
+  await page.getByRole("button", { name: "Aide : Soir", exact: true }).click();
+  await page.getByRole("button", { name: "Suggestions", exact: true }).click();
+  await page
+    .getByText("Exemple synthétique : ajouter un raccourci.", { exact: true })
+    .waitFor();
+  check(
+    "section suggestion remains private and listed with context",
+    await page.getByText("day.evening", { exact: true }).isVisible(),
+  );
+  await page.getByRole("button", { name: "Aujourd'hui", exact: true }).click();
+  await page.getByRole("heading", { name: "Soir", exact: true }).waitFor();
+  const columns = await page
+    .locator(".context-section")
+    .evaluateAll((nodes) =>
+      nodes.map((node) => node.getBoundingClientRect().left),
+    );
+  check("desktop sections use one column", new Set(columns).size === 1);
+  if (OUT)
+    await page.screenshot({ path: `${OUT}/today-desktop.png`, fullPage: true });
 
-// PWA installability signals.
-const manifest = await page.evaluate(async () => (await fetch("/manifest.webmanifest")).json());
-check("manifest has standalone display and 192/512 icons",
-  manifest.display === "standalone" && manifest.icons.some((i) => i.sizes === "512x512") && manifest.icons.some((i) => i.sizes === "192x192"));
-await page.reload();
-await page.waitForFunction(() => navigator.serviceWorker?.controller !== null, null, { timeout: 10000 });
-check("service worker controls the page", true);
+  const manifest = await page.evaluate(async () =>
+    (await fetch("/manifest.webmanifest")).json(),
+  );
+  check(
+    "PWA manifest and icons",
+    manifest.display === "standalone" &&
+      manifest.icons.some((icon) => icon.sizes === "512x512"),
+  );
+  await page.reload();
+  await page.waitForFunction(
+    () => navigator.serviceWorker?.controller != null,
+    null,
+    { timeout: 10000 },
+  );
+  check("service worker controls the page", true);
+  const countEvents = () =>
+    page.evaluate(
+      async () => (await (await fetch("/api/events")).json()).length,
+    );
+  const before = await countEvents();
+  await desktop.setOffline(true);
+  await page.getByRole("alert").filter({ hasText: "Hors ligne" }).waitFor();
+  sheet = await openDrink(page);
+  await sheet.getByRole("button", { name: "Ajouter", exact: true }).click();
+  await sheet
+    .getByText("Hors ligne : non enregistré.", { exact: true })
+    .waitFor();
+  check("offline write refused visibly", true);
+  await desktop.setOffline(false);
+  await page.waitForTimeout(500);
+  check("offline write never replayed", (await countEvents()) === before);
+  await page.keyboard.press("Escape");
 
-// Offline: write refused, nothing queued.
-const countEvents = () => page.evaluate(async () => (await (await fetch("/api/events")).json()).length);
-const before = await countEvents();
-await desktop.setOffline(true);
-await page.getByRole("alert").filter({ hasText: "Hors ligne" }).waitFor();
-check("offline banner shown", true);
-const drinkSection = page.locator("section", { hasText: "Ajouter une boisson" }).first();
-await drinkSection.getByRole("button", { name: "Thé vert", exact: true }).click();
-await drinkSection.getByText("Hors ligne : non enregistré.").waitFor();
-check("offline save reported as not saved", true);
-await desktop.setOffline(false);
-await page.waitForTimeout(1500);
-const after = await countEvents();
-check("no offline entry queued or replayed", after === before, `${before} -> ${after}`);
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByText("Télécharger le JSON", { exact: true }).click(),
+  ]);
+  const exported = JSON.parse(
+    await (
+      await download.createReadStream()
+    )
+      .toArray()
+      .then((chunks) => Buffer.concat(chunks).toString()),
+  );
+  check(
+    "export contains own entries and separate suggestions",
+    exported.journal.events.length === before &&
+      exported.feature_suggestions.length === 1,
+  );
+  const aliceId = exported.journal.events[0].id;
 
-// Export download.
-await page.getByRole("button", { name: "Export" }).click();
-const [download] = await Promise.all([page.waitForEvent("download"), page.getByText("Télécharger le JSON").click()]);
-const exported = JSON.parse(await (await download.createReadStream()).toArray().then((c) => Buffer.concat(c).toString()));
-check("JSON export downloads own records", exported.journal.events.length === after && exported.feature_suggestions.length === 1);
-const aliceEventId = exported.journal.events[0].id;
-
-// Second browser (mobile) on the same account.
-const mobile = await browser.newContext({ ...devices["Pixel 7"] });
-const phone = await mobile.newPage();
-await auth(phone, alice, false);
-await phone.getByText("Maté · 250 ml").first().waitFor();
-check("record visible from a second browser (mobile)", true);
-const overflow = await phone.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-check("mobile layout has no horizontal overflow", overflow <= 0, `overflow ${overflow}px`);
-const minTarget = await phone.evaluate(() =>
-  Math.min(...[...document.querySelectorAll(".quick")].map((b) => b.getBoundingClientRect().height)));
-check("quick buttons are touch-sized", minTarget >= 44, `${minTarget}px`);
-if (OUT) { await phone.screenshot({ path: `${OUT}/mobile.png`, fullPage: true }); await phone.getByText("Maté · 250 ml").first().scrollIntoViewIfNeeded(); await phone.screenshot({ path: `${OUT}/mobile-events.png` }); await phone.evaluate(() => window.scrollTo(0, 0)); await phone.screenshot({ path: `${OUT}/mobile-top.png` }); }
-
-// Account B isolation.
-const other = await browser.newContext({ viewport: { width: 1280, height: 900 } });
-const bobPage = await other.newPage();
-await auth(bobPage, bob, true);
-const bobView = await bobPage.evaluate(async (id) => ({
-  events: (await (await fetch("/api/events")).json()).length,
-  guessed: (await fetch(`/api/events/${id}`)).status,
-  del: (await fetch(`/api/events/${id}`, { method: "DELETE" })).status,
-  suggestions: (await (await fetch("/api/suggestions")).json()).length,
-}), aliceEventId);
-check("second account sees no data and cannot reach guessed IDs",
-  bobView.events === 0 && bobView.guessed === 404 && bobView.del === 404 && bobView.suggestions === 0, JSON.stringify(bobView));
-
-await browser.close();
-const failed = results.filter((r) => !r.ok);
-console.log(`\n${results.length - failed.length}/${results.length} smoke checks passed`);
-process.exit(failed.length ? 1 : 0);
+  const mobile = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+    deviceScaleFactor: 1,
+    colorScheme: "light",
+  });
+  const phone = await mobile.newPage();
+  await auth(phone, alice, false);
+  await phone.getByRole("button", { name: /Modifier Maté/ }).waitFor();
+  check("same account persisted across browsers", true);
+  check(
+    "390 px layout has no overflow",
+    await phone.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  );
+  check(
+    "quick actions are at least 44 px",
+    await phone
+      .locator(".quick-actions button")
+      .evaluateAll((nodes) =>
+        nodes.every((node) => node.getBoundingClientRect().height >= 44),
+      ),
+  );
+  if (OUT) {
+    await phone.screenshot({ path: `${OUT}/today-mobile.png`, fullPage: true });
+    await openDrink(phone);
+    await phone.screenshot({ path: `${OUT}/today-mobile-sheet.png` });
+    await phone.keyboard.press("Escape");
+  }
+  const other = await browser.newContext();
+  const bobPage = await other.newPage();
+  await auth(bobPage, bob, true);
+  const isolated = await bobPage.evaluate(
+    async (id) => ({
+      count: (await (await fetch("/api/events")).json()).length,
+      get: (await fetch(`/api/events/${id}`)).status,
+      del: (await fetch(`/api/events/${id}`, { method: "DELETE" })).status,
+      suggestions: (await (await fetch("/api/suggestions")).json()).length,
+    }),
+    aliceId,
+  );
+  check(
+    "second account cannot access entries or suggestions",
+    isolated.count === 0 &&
+      isolated.get === 404 &&
+      isolated.del === 404 &&
+      isolated.suggestions === 0,
+  );
+  check("no browser runtime errors", errors.length === 0, errors.join("; "));
+} finally {
+  await browser.close();
+}
+console.log(
+  `${results.filter((result) => result.ok).length}/${results.length} smoke checks passed`,
+);
+process.exitCode = results.every((result) => result.ok) ? 0 : 1;

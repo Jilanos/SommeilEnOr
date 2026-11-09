@@ -14,8 +14,8 @@ Neither contains the email address, password hash or sessions.
 | Section / file | Content |
 | --- | --- |
 | `conventions` | Europe/Paris, 04:00 tracking-day boundary, informational habitual window 23:30–07:00, units. |
-| `journal.tracking_days` | One row per tracking day with answers: alcohol, gluten, experienced stress, evening non-caffeinated drink, late sugar (+ time when yes), dinner time and quantity. |
-| `journal.nights` | Stable night ID, nominal `start_date`/`end_date`, cat presence, anticipated stress for `anticipated_stress_for_date`, planned early wake (target time, reason). |
+| `journal.tracking_days` | One row per tracking day with answers: alcohol, gluten, experienced stress, evening non-caffeinated drink, late sugar (+ optional time when yes), dinner time and quantity. |
+| `journal.nights` | Stable night ID, nominal `start_date`/`end_date`, cat presence, anticipated stress for `anticipated_stress_for_date`, planned early wake (optional target time and reason). |
 | `journal.events` | Repeated drinks (type, ml), activities (single type, intensity, minutes), naps (minutes); actual UTC instant, UTC offset and local time; default tracking date; linked night and whether the link was set manually. |
 | `favorites` | Drink presets. Entries created from a favorite are separate events referencing `favorite_id`. |
 | `feature_suggestions` | Private app-improvement notes with their action context. Not journal data. |
@@ -38,3 +38,6 @@ this export as follows, without inventing sleep intervals:
    recomputing nights from timestamps.
 4. Compare times using `*_utc` and `*_utc_offset_minutes`; never derive bedtime
    or wake time from the 04:00 boundary or the habitual 23:30–07:00 window.
+
+Sugar and planned early-wake answers may be `yes` with a null time. The time was
+not supplied; this does not turn the answer into unknown or imply an actual wake.

@@ -20,12 +20,12 @@ Implementation is delivered by `task_001_orchestrate_sommeilenor_collection_mvp_
 | Activity | Repeatable sessions: one type, intensity, start time and duration. No multi-activity session. |
 | Dinner | Time plus quantity: small / medium / big / massive, with French interface labels. |
 | Alcohol/gluten | Independent daily yes/no answers; unknown if unanswered. No quantities or required association with dinner. |
-| Late sugar | Manual yes/no with intake time when yes; no automatically calculated late threshold. |
+| Late sugar | Manual yes/no with optional intake time when yes; no automatically calculated late threshold. |
 | Evening hot drink | Non-caffeinated evening drink as a separate yes/no/unknown context flag. No duplicate intake record is created. |
 | Naps | Start time plus duration. |
 | Cat | Bedroom presence only; no cat-caused awakening field. |
 | Stress | Separate experienced stress of the tracking day and anticipated stress for the following day, each absent / medium / high. |
-| Early waking | A planned constraint with target time and reason, not a record of actual wake time. |
+| Early waking | A planned constraint with optional target time and reason, not a record of actual wake time. |
 | Sleep data | No manual bedtime, wake time, sleep quality or fatigue. Garmin data will be handled later, outside this MVP. |
 | History | Unrestricted past creation, correction and deletion. |
 | Factors | Fixed initial factor list; no generic custom-factor builder. |
@@ -82,7 +82,7 @@ These are distinct observations, with explicit assessed dates/periods in export.
 
 ## Late-sugar example
 
-When the user answers yes, store the stated intake time. No fixed threshold is
+When the user answers yes, save immediately; store an intake time only when provided. No fixed threshold is
 inferred; the user decides whether the intake was late. A no answer is distinct
 from unknown, and changing to no must not leave a misleading active intake time.
 
@@ -92,3 +92,24 @@ Garmin import/synchronization, correlations, recommendations, manual sleep
 metrics, reminders, offline writes, mixed-ingredient drinks, generic custom
 factors, cat awakening measurements, GitHub publication and production deployment
 are outside this MVP planning delivery.
+
+## Today capture redesign (November 2026)
+
+The owner approved a single-column order: quick capture, evening, night, collapsed
+advanced options. Pressing a selected answer again clears it to unknown. One global
+indicator reports server writes. The eight-question counter counts dinner once
+(when either time or quantity exists), alcohol, sugar, evening drink, both stress
+periods, cat and early waking. Gluten remains editable under advanced options.
+All four dinner portions and both independent stress periods are retained.
+
+Quick capture uses modal bottom sheets with fresh defaults: drinks 250 ml, sport
+30 minutes, naps 20 minutes. Favorites management is a separate screen reached
+from advanced options. Favorite selection copies its drink type; the volume starts
+at 250 ml and can be adjusted, while existing favorite definitions remain intact.
+Existing entries autosave valid edits; creating an entry uses the Add action.
+Early-wake reason saves on change. DST choices and event night
+associations stay in collapsed advanced options.
+
+Sugar yes and planned early-wake yes now permit null times. These are validation
+relaxations on existing nullable columns and fields, without a schema migration.
+Exports preserve yes plus null time; no timestamp is inferred.

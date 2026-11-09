@@ -37,7 +37,7 @@ export function HistoryScreen() {
           </div>
         )}
       </section>
-      <DayPage date={date} version={0} />
+      <DayPage key={date} date={date} />
     </>
   );
 }

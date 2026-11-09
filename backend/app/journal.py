@@ -106,11 +106,10 @@ def patch_night(
     for key in ("cat_presence", "anticipated_stress", "early_wake_planned"):
         if merged[key] is None:
             merged[key] = "unknown"
+    # Planned yes is meaningful before an optional target time is entered.
     if merged["early_wake_planned"] != "yes":
         merged["early_wake_target_time"] = None
         merged["early_wake_reason"] = None
-    elif not merged["early_wake_target_time"]:
-        raise Invalid("early_wake_target_required", "Heure de réveil prévue requise.")
     if merged["early_wake_reason"] is not None:
         merged["early_wake_reason"] = merged["early_wake_reason"].strip() or None
     conn.execute(
@@ -197,11 +196,10 @@ def patch_day(
         set_moment("dinner_at", patch.dinner_at)
     if "late_sugar_at" in fields:
         set_moment("late_sugar_at", patch.late_sugar_at)
+    # A yes answer may omit its time; never fabricate an intake timestamp.
     # A "no" or "unknown" answer must not leave a misleading intake time behind.
     if values["late_sugar"] != "yes":
         set_moment("late_sugar_at", None)
-    elif values["late_sugar_at_utc"] is None:
-        raise Invalid("late_sugar_time_required", "Heure de prise de sucre requise.")
 
     conn.execute(
         "UPDATE days SET alcohol = ?, gluten = ?, experienced_stress = ?,"

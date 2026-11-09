@@ -15,7 +15,9 @@ const partsFormatter = new Intl.DateTimeFormat("en-CA", {
 
 /** "YYYY-MM-DDTHH:MM" Paris wall time of an instant. */
 export function parisLocalInput(instant: Date = new Date()): string {
-  const parts = Object.fromEntries(partsFormatter.formatToParts(instant).map((p) => [p.type, p.value]));
+  const parts = Object.fromEntries(
+    partsFormatter.formatToParts(instant).map((p) => [p.type, p.value]),
+  );
   return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
 }
 
@@ -70,5 +72,28 @@ export function parisOffsetsFor(localInput: string): number[] {
   const [year, month, day] = datePart.split("-").map(Number);
   const [hour, minute] = timePart.split(":").map(Number);
   const wallAsUtc = Date.UTC(year, month - 1, day, hour, minute);
-  return [60, 120].filter((offset) => parisLocalInput(new Date(wallAsUtc - offset * 60000)) === localInput);
+  return [60, 120].filter(
+    (offset) =>
+      parisLocalInput(new Date(wallAsUtc - offset * 60000)) === localInput,
+  );
+}
+
+/** Wall times before 04:00 belong to the next calendar date of a tracking day. */
+export function wallTimeOnTrackingDay(
+  trackingDate: string,
+  hhmm: string,
+): string {
+  const date =
+    Number(hhmm.slice(0, 2)) < 4 ? addDays(trackingDate, 1) : trackingDate;
+  return `${date}T${hhmm}`;
+}
+
+/** Compact local date for the capture header. */
+export function formatCaptureDate(date: string): string {
+  return new Intl.DateTimeFormat("fr-FR", {
+    weekday: "short",
+    day: "numeric",
+    month: "numeric",
+    timeZone: "Europe/Paris",
+  }).format(new Date(`${date}T12:00:00Z`));
 }
